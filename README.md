@@ -21,15 +21,6 @@ A smart, mobile-friendly SPI (Semester Performance Index) calculator for **Gujar
 
 ---
 
-## 📸 Screenshots
-
-> *(Add your screenshots here)*
-
-| Dark Mode | Light Mode |
-|-----------|------------|
-| ![dark](screenshots/dark.png) | ![light](screenshots/light.png) |
-
----
 
 ## 🚀 How to Use
 
