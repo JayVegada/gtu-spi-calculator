@@ -5,7 +5,7 @@
   GitHub: https://github.com/JayVegada/gtu-spi-calculator
   LinkedIn: https://www.linkedin.com/in/jay-vegada-ja045y/
   Built for GTU students, by a GTU student.
-  © 2025 Jay Vegada. MIT License.
+  © 2026 Jay Vegada. MIT License.
 -->
 <html lang="en" data-theme="dark">
 <head>
@@ -253,7 +253,7 @@ tfoot td{padding:9px 6px;border-top:1px solid var(--border);color:var(--primary)
 .comp-field input,.comp-field select{background:var(--input-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--font-mono);font-size:.8rem;padding:6px 8px;min-height:34px;outline:none;width:100%;-webkit-appearance:none;}
 .comp-field input:focus,.comp-field select:focus{border-color:var(--primary);box-shadow:0 0 0 2px var(--primary-soft);}
 .comp-mode-tabs{display:flex;border-radius:6px;overflow:hidden;border:1px solid var(--border);}
-.comp-mode-tab{flex:1;padding:5px 6px;background:var(--card);border:none;color:var(--text2);font-size:.65rem;font-family:var(--font-mono);cursor:pointer;touch-action:manipulation;min-height:30px;transition:background .12s,color .12s;}
+.comp-mode-tab{flex:1;padding:5px 6px;background:var(--card);border:none;color:var(--text2);font-size:.65rem;font-family:var(--font-mono);cursor:pointer;touch-action:manipulation;min-height:44px;transition:background .12s,color .12s;}
 .comp-mode-tab.active{background:var(--primary);color:var(--primary-text);}
 .comp-pass-badge{font-size:.62rem;font-family:var(--font-mono);padding:2px 6px;border-radius:999px;margin-left:4px;}
 .pass-ok{background:var(--green-bg);color:var(--green);}
@@ -575,6 +575,16 @@ function updateComp(sid,cid,field,val){
       const mid=GRADE_MID[val]/100;
       c.obtained=Math.round(mid*(parseFloat(c.maxMarks)||0));
     }
+  }
+  if(field==='mode'){
+    const idx=subjects.indexOf(s);
+    const cardEl=document.getElementById('card_'+sid);
+    if(cardEl){
+      const bodyWasOpen=document.getElementById('body_'+sid)&&document.getElementById('body_'+sid).classList.contains('open');
+      cardEl.innerHTML=cardHTML(s,idx+1);
+      if(!bodyWasOpen){const b=document.getElementById('body_'+sid);if(b)b.classList.remove('open');}
+    }
+    recalc();return;
   }
   updateCardResult(s);recalc();
 }
