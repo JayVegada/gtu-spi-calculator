@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<!--
+  GTU SPI Calculator
+  Author: Jay Vegada (@JayVegada) | Pirate
+  GitHub: https://github.com/JayVegada/gtu-spi-calculator
+  LinkedIn: https://www.linkedin.com/in/jay-vegada-ja045y/
+  Built for GTU students, by a GTU student.
+  © 2025 Jay Vegada. MIT License.
+-->
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>GTU SPI Calculator — by Jay Vegada</title>
+<meta name="author" content="Jay Vegada (@JayVegada)">
+<meta name="description" content="Free GTU SPI/CGPA calculator for Gujarat Technological University students. Supports all subject types, target SPI prediction, grade picker, and offline use.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Vercel light palette */
+  --bg: #fafafa; --surface: #ffffff; --card: #ffffff; --card-hi: #fafafa;
+  --primary: #171717; --primary-soft: rgba(23,23,23,0.06); --primary-text: #ffffff;
+  --text: #171717; --text2: #4d4d4d; --border: #ebebeb;
+  --sidebar-bg: #ffffff; --input-bg: #fafafa;
+  --green: #1a7f37; --green-bg: rgba(26,127,55,0.10);
+  --yellow: #9a6700; --yellow-bg: rgba(154,103,0,0.10);
+  --red: #cf222e; --red-bg: rgba(207,34,46,0.10);
+  --shadow: rgba(0,0,0,0.08) 0px 0px 0px 1px;
+  --shadow-md: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px 0px;
+  --radius: 6px; --radius-sm: 6px;
+  --font: 'Plus Jakarta Sans',sans-serif;
+  --font-head: 'Bricolage Grotesque',sans-serif;
+  --font-mono: 'JetBrains Mono',monospace;
+}
+[data-theme="dark"] {
+  /* Linear dark palette */
+  --bg: #08090a; --surface: #0f1011; --card: #161718; --card-hi: #23252a;
+  --primary: #e4f222; --primary-soft: rgba(228,242,34,0.10); --primary-text: #08090a;
+  --text: #f7f8f8; --text2: #8a8f98; --border: #23252a;
+  --sidebar-bg: #0f1011; --input-bg: #161718;
+  --green: #27a644; --green-bg: rgba(39,166,68,0.10);
+  --yellow: #d29922; --yellow-bg: rgba(210,153,34,0.10);
+  --red: #eb5757; --red-bg: rgba(235,87,87,0.10);
+  --shadow: rgb(35,37,42) 0px 0px 0px 1px inset;
+  --shadow-md: rgba(0,0,0,0.4) 0px 2px 4px 0px, rgb(35,37,42) 0px 0px 0px 1px inset;
+  --radius: 12px; --radius-sm: 6px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;min-height:100vh;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);transition:background .2s,color .2s;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding-top:calc(12px + env(safe-area-inset-top));box-shadow:var(--shadow);}
+.topbar-left{display:flex;align-items:center;gap:10px;}
+.topbar h1{font-family:var(--font-head);font-size:1rem;font-weight:700;color:var(--text);}
+.topbar-right{display:flex;align-items:center;gap:8px;}
+.hamburger{background:none;border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px;color:var(--text);cursor:pointer;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;touch-action:manipulation;transition:background .15s;}
+.hamburger:hover{background:var(--card);}
+.theme-btn{background:none;border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;color:var(--text);cursor:pointer;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;font-size:1rem;touch-action:manipulation;transition:background .15s;}
+.theme-btn:hover{background:var(--card);}
+
+.app-container{display:flex;flex-direction:column;height:calc(100vh - 60px);overflow:hidden;}
+.sidebar{position:fixed;top:0;left:0;width:85vw;max-width:320px;height:100vh;z-index:1000;transform:translateX(-100%);transition:transform .28s ease;background:var(--sidebar-bg);border-right:1px solid var(--border);overflow-y:auto;-webkit-overflow-scrolling:touch;padding-top:env(safe-area-inset-top);}
+.sidebar.open{transform:translateX(0);}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:999;}
+.sidebar-overlay.visible{display:block;}
+.sidebar-header{padding:20px 16px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.sidebar-header h2{font-family:var(--font-head);font-size:1rem;font-weight:700;color:var(--text);}
+.sidebar-close{background:none;border:none;color:var(--text2);font-size:1.3rem;cursor:pointer;padding:6px;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-sm);touch-action:manipulation;}
+.sidebar-close:hover{background:var(--card);}
+.sidebar-section{padding:16px;}
+.sidebar-label{font-size:.68rem;font-family:var(--font-mono);color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+.spi-display-sidebar{background:var(--primary-soft);border:1px solid var(--primary);border-radius:var(--radius);padding:14px 16px;text-align:center;margin-bottom:12px;}
+.spi-val{font-family:var(--font-mono);font-size:2.4rem;font-weight:700;color:var(--primary);line-height:1;}
+.spi-sub{font-size:.72rem;color:var(--text2);margin-top:4px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.5px;}
+.sidebar-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.stat-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px;text-align:center;}
+.stat-box .sv{font-family:var(--font-mono);font-size:1.1rem;font-weight:600;color:var(--text);}
+.stat-box .sl{font-size:.65rem;color:var(--text2);margin-top:2px;text-transform:uppercase;letter-spacing:.3px;}
+.subject-list-sidebar{display:flex;flex-direction:column;gap:4px;}
+.subj-sidebar-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:var(--radius-sm);cursor:pointer;touch-action:manipulation;transition:background .15s;min-height:44px;}
+.subj-sidebar-item:hover{background:var(--card);}
+.subj-sidebar-item .ssi-name{font-size:.82rem;color:var(--text);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;}
+.grade-badge{font-size:.68rem;font-family:var(--font-mono);font-weight:700;padding:3px 8px;border-radius:999px;flex-shrink:0;margin-left:6px;}
+
+.main-content{flex:1;overflow-y:auto;padding:16px;-webkit-overflow-scrolling:touch;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:var(--shadow);}
+.card-title{font-family:var(--font-head);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.field{display:flex;flex-direction:column;gap:5px;}
+.field label{font-size:.72rem;font-weight:600;color:var(--text2);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.4px;}
+.field input,.field select{background:var(--input-bg);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font);font-size:.9rem;padding:10px 12px;min-height:44px;outline:none;transition:border-color .15s,box-shadow .15s;width:100%;-webkit-appearance:none;appearance:none;touch-action:manipulation;}
+.field input:focus,.field select:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft);}
+.field input::placeholder{color:var(--text2);opacity:.6;}
+.field input[readonly]{opacity:.6;cursor:default;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.grid-3{display:grid;grid-template-columns:1fr;gap:10px;}
+.grid-4{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+.spi-target-card{background:var(--primary-soft);border:1px solid var(--primary);border-radius:var(--radius);padding:16px;margin-bottom:14px;}
+.spi-target-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.spi-target-label{font-size:.72rem;font-family:var(--font-mono);color:var(--primary);text-transform:uppercase;letter-spacing:1px;}
+.spi-target-val{font-family:var(--font-mono);font-size:2.2rem;font-weight:700;color:var(--primary);line-height:1;}
+.spi-slider{width:100%;height:6px;-webkit-appearance:none;appearance:none;background:var(--border);border-radius:999px;cursor:pointer;outline:none;touch-action:manipulation;}
+.spi-slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;background:var(--primary);border-radius:50%;box-shadow:0 0 0 3px var(--primary-soft);cursor:pointer;}
+.spi-slider::-moz-range-thumb{width:22px;height:22px;background:var(--primary);border-radius:50%;border:none;}
+.slider-ticks{display:flex;justify-content:space-between;margin-top:6px;}
+.slider-ticks span{font-size:.65rem;color:var(--text2);font-family:var(--font-mono);}
+
+.subj-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow);transition:border-color .2s;animation:fadeUp .25s ease;}
+.subj-card.has-grade{border-color:var(--primary);}
+.subj-header{display:flex;align-items:center;padding:12px 14px;cursor:pointer;background:var(--card);touch-action:manipulation;min-height:56px;gap:10px;}
+.subj-num{width:28px;height:28px;border-radius:8px;background:var(--primary-soft);border:1px solid var(--primary);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:var(--primary);font-family:var(--font-mono);flex-shrink:0;}
+.subj-info{flex:1;min-width:0;}
+.subj-name{font-size:.9rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.subj-meta{font-size:.7rem;color:var(--text2);margin-top:1px;font-family:var(--font-mono);}
+.subj-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.btn-remove{background:var(--red-bg);border:1px solid var(--red);color:var(--red);border-radius:var(--radius-sm);width:32px;height:32px;min-width:32px;min-height:32px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;touch-action:manipulation;transition:opacity .15s;}
+.btn-remove:hover{opacity:.7;}
+.subj-body{padding:12px;display:none;}
+.subj-body.open{display:block;}
+.section-mini{font-size:.68rem;font-family:var(--font-mono);color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin:12px 0 8px;display:flex;align-items:center;gap:6px;}
+.section-mini::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* Grade mode toggle */
+.mark-mode-wrap{display:flex;flex-direction:column;gap:5px;}
+.mark-mode-tabs{display:flex;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border);background:var(--card);}
+.mark-mode-tab{flex:1;padding:7px 8px;background:none;border:none;color:var(--text2);font-size:.7rem;font-family:var(--font-mono);cursor:pointer;text-transform:uppercase;letter-spacing:.4px;transition:background .15s,color .15s;touch-action:manipulation;min-height:38px;}
+.mark-mode-tab.active{background:var(--primary);color:var(--primary-text);}
+.mark-mode-tab:not(.active):hover{background:var(--primary-soft);color:var(--primary);}
+
+.result-strip{background:var(--card);border-radius:var(--radius-sm);padding:10px 12px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:12px;}
+.rs-item{display:flex;flex-direction:column;gap:1px;}
+.rs-lbl{font-size:.62rem;font-family:var(--font-mono);color:var(--text2);text-transform:uppercase;letter-spacing:.4px;}
+.rs-val{font-family:var(--font-mono);font-size:.9rem;font-weight:600;color:var(--text);}
+.target-box{border-radius:var(--radius-sm);padding:8px 12px;font-size:.78rem;font-family:var(--font-mono);display:flex;align-items:flex-start;gap:8px;margin-top:8px;flex-wrap:wrap;flex-direction:column;word-break:break-word;overflow-wrap:break-word;}
+.target-box.warn{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow);}
+.target-box.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green);}
+.target-box.fail{background:var(--red-bg);color:var(--red);border:1px solid var(--red);}
+.warn-text{font-size:.7rem;color:var(--red);margin-top:4px;font-family:var(--font-mono);}
+
+/* GTU grade picker inside target box */
+.gtu-grade-picker{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
+.gp-btn{padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text2);font-size:.72rem;font-family:var(--font-mono);font-weight:600;cursor:pointer;transition:all .15s;touch-action:manipulation;min-height:40px;min-width:60px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1px;}
+.gp-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-soft);}
+.gp-btn.selected{background:var(--primary);color:var(--primary-text);border-color:var(--primary);}
+.gp-btn.impossible{opacity:.35;cursor:not-allowed;text-decoration:line-through;}
+
+/* SPI preview row */
+.spi-preview-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px;padding:8px 10px;background:var(--primary-soft);border:1px solid var(--primary);border-radius:var(--radius-sm);}
+.spi-prev-lbl{font-size:.68rem;font-family:var(--font-mono);color:var(--text2);text-transform:uppercase;}
+.spi-prev-val{font-family:var(--font-mono);font-size:1.1rem;font-weight:700;color:var(--primary);}
+.spi-prev-arrow{color:var(--text2);font-size:.8rem;}
+
+.btn-add-subject{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;background:none;border:1.5px dashed var(--border);border-radius:var(--radius);color:var(--primary);font-family:var(--font);font-size:.9rem;font-weight:600;cursor:pointer;touch-action:manipulation;min-height:48px;transition:background .15s,border-color .15s;margin-bottom:14px;}
+.btn-add-subject:hover{background:var(--primary-soft);border-color:var(--primary);}
+.presets{display:flex;gap:6px;flex-wrap:nowrap;margin-bottom:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;}
+.presets::-webkit-scrollbar{height:3px;}
+.preset-btn{padding:7px 12px;border-radius:999px;background:var(--card);border:1px solid var(--border);color:var(--text2);font-size:.75rem;font-family:var(--font);font-weight:500;cursor:pointer;touch-action:manipulation;min-height:36px;white-space:nowrap;flex-shrink:0;transition:all .15s;}
+.preset-btn:hover{background:var(--primary-soft);color:var(--primary);border-color:var(--primary);}
+
+.result-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:var(--shadow);}
+.result-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
+.result-top > *{min-width:0;}
+.result-spi-big{font-family:var(--font-mono);font-size:2.4rem;font-weight:700;line-height:1;transition:color .3s;}
+.result-spi-lbl{font-size:.68rem;font-family:var(--font-mono);color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-top:4px;}
+.status-msg{flex:1;min-width:min(140px,100%);padding:10px 12px;border-radius:var(--radius-sm);font-size:.8rem;font-weight:500;line-height:1.5;}
+.s-green{background:var(--green-bg);color:var(--green);border:1px solid var(--green);}
+.s-yellow{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow);}
+.s-red{background:var(--red-bg);color:var(--red);border:1px solid var(--red);}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -2px;}
+table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:.7rem;min-width:360px;}
+thead th{text-align:left;padding:7px 6px;border-bottom:1px solid var(--border);color:var(--text2);font-weight:500;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;}
+tbody td{padding:8px 6px;border-bottom:1px solid var(--border);color:var(--text);}
+tbody tr:last-child td{border-bottom:none;}
+tfoot td{padding:9px 6px;border-top:1px solid var(--border);color:var(--primary);font-weight:700;}
+
+@media(min-width:480px){
+  .grid-3{grid-template-columns:1fr 1fr 1fr;}
+}
+@media(min-width:768px){
+  .main-content{padding:20px 24px;}
+  .grid-4{grid-template-columns:1fr 1fr 1fr 1fr;}
+  .result-spi-big{font-size:3.2rem;}
+  h1,h2{font-size:1.15rem;}h3{font-size:1rem;}
+}
+@media(min-width:1024px){
+  .app-container{flex-direction:row;height:calc(100vh - 61px);}
+  .sidebar{position:relative;transform:translateX(0)!important;width:280px;min-width:280px;height:100%;flex-shrink:0;border-right:1px solid var(--border);}
+  .sidebar-overlay{display:none!important;}.hamburger{display:none;}.sidebar-close{display:none;}
+  .main-content{padding:24px;}
+  .grid-2{grid-template-columns:1fr 1fr;}.grid-3{grid-template-columns:1fr 1fr 1fr;}.grid-4{grid-template-columns:1fr 1fr 1fr 1fr;}
+  body{font-size:15px;}h1,h2{font-size:1.3rem;}h3{font-size:1.1rem;}
+}
+::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── SAVE/LOAD MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:2000;align-items:center;justify-content:center;padding:16px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);width:100%;max-width:420px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:fadeUp .2s ease;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border);}
+.modal-header h3{font-family:var(--font-head);font-size:.95rem;font-weight:700;color:var(--text);}
+.modal-close{background:none;border:none;color:var(--text2);font-size:1.2rem;cursor:pointer;padding:4px;min-width:36px;min-height:36px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-sm);touch-action:manipulation;}
+.modal-close:hover{background:var(--card);}
+.modal-body{padding:16px 18px;}
+.save-name-row{display:flex;gap:8px;margin-bottom:14px;}
+.save-name-row input{flex:1;background:var(--input-bg);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font);font-size:.88rem;padding:9px 12px;outline:none;min-height:42px;}
+.save-name-row input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft);}
+.btn-save-confirm{background:var(--primary);color:var(--primary-text);border:none;border-radius:var(--radius-sm);padding:9px 16px;font-family:var(--font);font-size:.85rem;font-weight:600;cursor:pointer;white-space:nowrap;min-height:42px;touch-action:manipulation;transition:opacity .15s;}
+.btn-save-confirm:hover{opacity:.85;}
+.saved-list{display:flex;flex-direction:column;gap:6px;}
+.saved-item{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);animation:fadeUp .18s ease;}
+.saved-item-info{flex:1;min-width:0;}
+.saved-item-name{font-size:.85rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.saved-item-meta{font-size:.68rem;color:var(--text2);font-family:var(--font-mono);margin-top:1px;}
+.saved-item-actions{display:flex;gap:5px;flex-shrink:0;}
+.btn-load-preset{background:var(--primary-soft);border:1px solid var(--primary);color:var(--primary);border-radius:var(--radius-sm);padding:5px 10px;font-size:.75rem;font-weight:600;cursor:pointer;touch-action:manipulation;min-height:32px;transition:background .15s;}
+.btn-load-preset:hover{background:var(--primary);color:var(--primary-text);}
+.btn-del-preset{background:var(--red-bg);border:1px solid var(--red);color:var(--red);border-radius:var(--radius-sm);width:30px;height:30px;min-width:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.85rem;touch-action:manipulation;transition:opacity .15s;}
+.btn-del-preset:hover{opacity:.7;}
+.empty-saves{text-align:center;padding:24px 0;color:var(--text2);font-size:.82rem;}
+.empty-saves span{font-size:1.8rem;display:block;margin-bottom:6px;}
+.modal-section-label{font-size:.68rem;font-family:var(--font-mono);color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text);color:var(--bg);padding:9px 18px;border-radius:999px;font-size:.8rem;font-family:var(--font);font-weight:600;z-index:3000;opacity:0;transition:all .25s ease;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.save-btn{background:none;border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;color:var(--text);cursor:pointer;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:600;gap:4px;touch-action:manipulation;transition:background .15s;font-family:var(--font-mono);}
+.save-btn:hover{background:var(--primary-soft);color:var(--primary);border-color:var(--primary);}
+@media(max-width:400px){.save-btn span{display:none;}}
+.p-high{background:var(--red-bg);color:var(--red);border:1px solid rgba(235,87,87,0.30);}
+.p-med{background:var(--yellow-bg);color:var(--yellow);border:1px solid rgba(210,153,34,0.30);}
+.p-low{background:var(--green-bg);color:var(--green);border:1px solid rgba(39,166,68,0.30);}
+[data-theme="dark"] .p-med{color:var(--yellow);}[data-theme="dark"] .p-high{color:var(--red);}[data-theme="dark"] .p-low{color:var(--green);}
+
+/* ── COMPONENT CARDS ── */
+.comp-list{display:flex;flex-direction:column;gap:8px;margin-bottom:8px;}
+.comp-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;position:relative;}
+.comp-card.is-exam-comp{border-color:var(--primary);border-left:3px solid var(--primary);}
+.comp-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.comp-name-inp{flex:1;min-width:80px;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--font-mono);font-size:.78rem;font-weight:600;padding:5px 8px;outline:none;min-height:34px;}
+.comp-name-inp:focus{border-color:var(--primary);box-shadow:0 0 0 2px var(--primary-soft);}
+.comp-actions{display:flex;gap:4px;flex-shrink:0;}
+.comp-btn{background:none;border:1px solid var(--border);border-radius:6px;color:var(--text2);cursor:pointer;font-size:.75rem;padding:4px 7px;min-height:30px;min-width:30px;display:flex;align-items:center;justify-content:center;touch-action:manipulation;transition:all .12s;}
+.comp-btn:hover{background:var(--primary-soft);color:var(--primary);border-color:var(--primary);}
+.comp-btn.danger:hover{background:var(--red-bg);color:var(--red);border-color:var(--red);}
+.comp-btn.exam-star{font-size:.85rem;}
+.comp-btn.exam-star.active{background:var(--primary-soft);color:var(--primary);border-color:var(--primary);}
+.comp-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+@media(min-width:480px){.comp-fields{grid-template-columns:1fr 1fr 1fr 1fr;}}
+.comp-field{display:flex;flex-direction:column;gap:3px;}
+.comp-field label{font-size:.6rem;font-weight:600;color:var(--text2);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.3px;}
+.comp-field input,.comp-field select{background:var(--input-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--font-mono);font-size:.8rem;padding:6px 8px;min-height:34px;outline:none;width:100%;-webkit-appearance:none;}
+.comp-field input:focus,.comp-field select:focus{border-color:var(--primary);box-shadow:0 0 0 2px var(--primary-soft);}
+.comp-mode-tabs{display:flex;border-radius:6px;overflow:hidden;border:1px solid var(--border);}
+.comp-mode-tab{flex:1;padding:5px 6px;background:var(--card);border:none;color:var(--text2);font-size:.65rem;font-family:var(--font-mono);cursor:pointer;touch-action:manipulation;min-height:30px;transition:background .12s,color .12s;}
+.comp-mode-tab.active{background:var(--primary);color:var(--primary-text);}
+.comp-pass-badge{font-size:.62rem;font-family:var(--font-mono);padding:2px 6px;border-radius:999px;margin-left:4px;}
+.pass-ok{background:var(--green-bg);color:var(--green);}
+.pass-fail{background:var(--red-bg);color:var(--red);}
+.btn-add-comp{display:flex;align-items:center;justify-content:center;gap:5px;width:100%;padding:8px;background:none;border:1px dashed var(--border);border-radius:var(--radius-sm);color:var(--text2);font-family:var(--font-mono);font-size:.75rem;cursor:pointer;touch-action:manipulation;min-height:36px;transition:all .15s;}
+.btn-add-comp:hover{background:var(--primary-soft);color:var(--primary);border-color:var(--primary);}
+.ts-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
+.ts-chip{font-family:var(--font-mono);font-size:.68rem;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:3px 10px;color:var(--text2);}
+.ts-chip span{color:var(--primary);font-weight:700;}
+.ts-fields{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+    <h1>GTU SPI Calculator</h1>
+  </div>
+  <div class="topbar-right">
+    <button class="save-btn" onclick="openSaveModal()" title="Save / Load presets">💾 <span>Saves</span></button>
+    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">☀️</button>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<div class="app-container">
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2>📊 Summary</h2>
+      <button class="sidebar-close" onclick="closeSidebar()">✕</button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Projected SPI</div>
+      <div class="spi-display-sidebar">
+        <div class="spi-val" id="sidebarSpi">—</div>
+        <div class="spi-sub" id="sidebarStatus">No subjects added</div>
+      </div>
+      <div class="sidebar-stat-row">
+        <div class="stat-box"><div class="sv" id="statCredits">0</div><div class="sl">Credits</div></div>
+        <div class="stat-box"><div class="sv" id="statSubjects">0</div><div class="sl">Subjects</div></div>
+      </div>
+    </div>
+    <div class="sidebar-section" style="padding-top:0">
+      <div class="sidebar-label">Subjects</div>
+      <div class="subject-list-sidebar" id="sidebarSubjectList"></div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="card">
+      <div class="card-title">🎓 Student Info</div>
+      <div class="grid-2" style="margin-bottom:10px">
+        <div class="field"><label>Name</label><input type="text" id="studentName" placeholder="Student Name"></div>
+        <div class="field"><label>Enrollment No.</label><input type="text" id="enrollNo" placeholder="Enrollment Number"></div>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Branch</label><input type="text" id="branch" placeholder="Branch Name"></div>
+        <div class="field"><label>Semester</label>
+          <select id="sem">
+            <option value="">Select</option>
+            <option value="1">Semester 1</option><option value="2">Semester 2</option>
+            <option value="3">Semester 3</option><option value="4" selected>Semester 4</option>
+            <option value="5">Semester 5</option><option value="6">Semester 6</option>
+            <option value="7">Semester 7</option><option value="8">Semester 8</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="spi-target-card">
+      <div class="spi-target-top">
+        <div class="spi-target-label">🎯 Target SPI</div>
+        <div class="spi-target-val" id="targetDisp">8.00</div>
+      </div>
+      <input type="range" class="spi-slider" id="spiSlider" min="5" max="10" step="0.5" value="8" oninput="onSlider()">
+      <div class="slider-ticks">
+        <span>5.0</span><span>6.0</span><span>7.0</span><span>8.0</span><span>9.0</span><span>10.0</span>
+      </div>
+    </div>
+
+    <div class="card" style="padding-bottom:8px">
+      <div class="card-title">📚 Subjects</div>
+      <div class="presets">
+        <span style="font-size:.68rem;color:var(--text2);font-family:var(--font-mono);align-self:center;flex-shrink:0">Template:</span>
+        <button class="preset-btn" onclick="loadPreset('ce4')">CE Sem 4</button>
+        <button class="preset-btn" onclick="loadPreset('tp200')">T+P 200</button>
+        <button class="preset-btn" onclick="loadPreset('tp150')">T+P 150</button>
+        <button class="preset-btn" onclick="loadPreset('tp130')">T+P 130</button>
+        <button class="preset-btn" onclick="loadPreset('tp120')">T+P 120</button>
+        <button class="preset-btn" onclick="loadPreset('theory100')">Theory 100</button>
+        <button class="preset-btn" onclick="loadPreset('theory80')">Theory 80</button>
+        <button class="preset-btn" onclick="loadPreset('internal')">No GTU</button>
+        <button class="preset-btn" onclick="loadPreset('project')">Project</button>
+        <button class="preset-btn" onclick="loadPreset('custom')">+ Custom</button>
+        <button class="preset-btn" onclick="clearAll()" style="color:var(--red)">🗑 Clear</button>
+      </div>
+      <div id="subjectsList"></div>
+      <button class="btn-add-subject" onclick="addSubject()">＋ Add Subject</button>
+    </div>
+
+    <div class="result-panel">
+      <div class="card-title">📈 Result</div>
+      <div class="result-top">
+        <div>
+          <div class="result-spi-big" id="resultSpi" style="color:var(--primary)">—</div>
+          <div class="result-spi-lbl">Projected SPI</div>
+        </div>
+        <div class="status-msg s-yellow" id="statusMsg">Add subjects to begin</div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Subject</th><th>Marks</th><th>%</th><th>Grade</th><th>Pts</th><th>Cr</th><th>Pts×Cr</th><th>Note</th></tr></thead>
+          <tbody id="breakdownBody"></tbody>
+          <tfoot><tr><td colspan="5">Total Credits · Weighted Points · SPI</td><td id="ftCr">—</td><td id="ftPts">—</td><td></td></tr></tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Save/Load Modal -->
+<div class="modal-overlay" id="saveModal">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3>💾 Save &amp; Load Presets</h3>
+      <button class="modal-close" onclick="closeSaveModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section-label">Save current subjects as preset</div>
+      <div class="save-name-row">
+        <input type="text" id="saveNameInput" placeholder="e.g. CE Sem 4 – My Marks" maxlength="50">
+        <button class="btn-save-confirm" onclick="doSave()">Save</button>
+      </div>
+      <div class="modal-section-label">Saved presets</div>
+      <div class="saved-list" id="savedList"></div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+// GRADE TABLE
+// ═══════════════════════════════════════════════
+const GRADES=[
+  {min:85,grade:'AA',pts:10},{min:75,grade:'AB',pts:9},
+  {min:65,grade:'BB',pts:8},{min:55,grade:'BC',pts:7},
+  {min:45,grade:'CC',pts:6},{min:40,grade:'CD',pts:5},
+  {min:35,grade:'DD',pts:4},{min:0,grade:'FF',pts:0},
+];
+const GRADE_MID={AA:92,AB:80,BB:70,BC:60,CC:49,CD:42,DD:37,FF:15};
+function getGradeByPct(pct){return GRADES.find(g=>pct>=g.min)||GRADES[GRADES.length-1];}
+function getGradeByName(name){return GRADES.find(g=>g.grade===name)||null;}
+function gradeColor(g){const m={AA:'var(--green)',AB:'var(--primary)',BB:'#a78bfa',BC:'#c084fc',CC:'var(--yellow)',CD:'#fb923c',DD:'#f97316',FF:'var(--red)'};return m[g]||'var(--text2)';}
+function gradeClass(g){if(['AA','AB'].includes(g))return 'p-low';if(['BB','BC'].includes(g))return 'p-med';return 'p-high';}
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let subjects=[],subCtr=0,compCtr=0,targetSPI=8.0;
+
+function mkComp(p={}){
+  return {
+    id: p.id||('c'+(++compCtr)),
+    name: p.name||'Component',
+    maxMarks: p.maxMarks!==undefined?p.maxMarks:0,
+    passMarks: p.passMarks!==undefined?p.passMarks:0,
+    includeInPass: p.includeInPass!==undefined?p.includeInPass:(p.passMarks>0),
+    includeInTotal: p.includeInTotal!==undefined?p.includeInTotal:true,
+    obtained: p.obtained!==undefined?p.obtained:'',
+    mode: p.mode||'marks',
+    grade: p.grade||'',
+    isExam: p.isExam||false,      // exam component → target prediction
+    estGrade: p.estGrade||'',     // estimated grade when obtained blank + isExam
+  };
+}
+
+function mkSubject(p={}){
+  ++subCtr;
+  return {
+    id: p.id||subCtr,
+    name: p.name||'',
+    subjectCode: p.subjectCode||'',
+    credits: p.credits!==undefined?p.credits:4,
+    audit: p.audit||false,
+    includeInSPI: p.includeInSPI!==undefined?p.includeInSPI:true,
+    teachingScheme: p.teachingScheme||{L:0,T:0,P:0,PBL:0},
+    components: (p.components||[]).map(c=>mkComp(c)),
+  };
+}
+
+// ─── Migration: old format → components[] ───
+function migrateSubject(raw){
+  // already new format
+  if(raw.components&&Array.isArray(raw.components)&&raw.components.length>0)
+    return raw;
+  const comps=[];
+  if(!raw.no_gtu&&(raw.gtu_max||0)>0){
+    comps.push(mkComp({name:'GTU ESE',maxMarks:raw.gtu_max||70,passMarks:raw.pass_gtu||23,
+      includeInPass:true,obtained:raw.gtu!==undefined?raw.gtu:'',
+      mode:raw.mode_gtu||'marks',grade:raw.grade_gtu||'',isExam:true,estGrade:raw.est_gtu_grade||''}));
+  }
+  if((raw.mid_max||0)>0){
+    comps.push(mkComp({name:'Mid Exam',maxMarks:raw.mid_max||30,passMarks:raw.pass_mid||12,
+      includeInPass:true,obtained:raw.mid!==undefined?raw.mid:'',
+      mode:raw.mode_mid||'marks',grade:raw.grade_mid||''}));
+  }
+  if((raw.int_max||0)>0){
+    const intName=raw.no_gtu?'Internal':'Practical Internal';
+    comps.push(mkComp({name:intName,maxMarks:raw.int_max||0,passMarks:0,
+      includeInPass:false,obtained:raw.internal!==undefined?raw.internal:'',
+      mode:raw.mode_int||'marks',grade:raw.grade_int||''}));
+  }
+  if(comps.length===0){
+    comps.push(mkComp({name:'Internal',maxMarks:100,passMarks:0,includeInPass:false}));
+  }
+  return {
+    id:raw.id||0, name:raw.name||'', subjectCode:raw.subjectCode||'',
+    credits:raw.credits||4, audit:raw.audit||false, includeInSPI:raw.includeInSPI!==false,
+    teachingScheme:raw.teachingScheme||{L:0,T:0,P:0,PBL:0},
+    components:comps,
+  };
+}
+
+// ═══════════════════════════════════════════════
+// COMPONENT PRESETS
+// ═══════════════════════════════════════════════
+const COMP_PRESETS={
+  tp200:[
+    {name:'GTU ESE',maxMarks:70,passMarks:23,includeInPass:true,isExam:true},
+    {name:'Mid Exam',maxMarks:30,passMarks:12,includeInPass:true},
+    {name:'Practical Internal',maxMarks:100,passMarks:0,includeInPass:false},
+  ],
+  tp150:[
+    {name:'GTU ESE',maxMarks:70,passMarks:23,includeInPass:true,isExam:true},
+    {name:'Mid Exam',maxMarks:30,passMarks:12,includeInPass:true},
+    {name:'Practical Internal',maxMarks:20,passMarks:0,includeInPass:false},
+    {name:'Viva',maxMarks:30,passMarks:0,includeInPass:false},
+  ],
+  tp130:[
+    {name:'GTU ESE',maxMarks:70,passMarks:23,includeInPass:true,isExam:true},
+    {name:'Mid Exam',maxMarks:30,passMarks:12,includeInPass:true},
+    {name:'Practical Internal',maxMarks:30,passMarks:0,includeInPass:false},
+  ],
+  tp120:[
+    {name:'GTU ESE',maxMarks:70,passMarks:23,includeInPass:true,isExam:true},
+    {name:'Mid Exam',maxMarks:30,passMarks:12,includeInPass:true},
+    {name:'Practical Internal',maxMarks:20,passMarks:0,includeInPass:false},
+  ],
+  theory100:[
+    {name:'GTU ESE',maxMarks:70,passMarks:23,includeInPass:true,isExam:true},
+    {name:'Mid Exam',maxMarks:30,passMarks:12,includeInPass:true},
+  ],
+  theory80:[
+    {name:'GTU ESE',maxMarks:50,passMarks:17,includeInPass:true,isExam:true},
+    {name:'Mid Exam',maxMarks:30,passMarks:12,includeInPass:true},
+  ],
+  internal:[
+    {name:'Mid Exam',maxMarks:30,passMarks:12,includeInPass:true},
+    {name:'Internal',maxMarks:20,passMarks:0,includeInPass:false},
+  ],
+  project:[
+    {name:'Project Internal',maxMarks:100,passMarks:0,includeInPass:false},
+    {name:'Project Viva/Report',maxMarks:100,passMarks:0,includeInPass:false},
+  ],
+  custom:[
+    {name:'Component 1',maxMarks:70,passMarks:0,includeInPass:false,isExam:false},
+  ],
+};
+
+function addSubject(p=null){
+  const s=mkSubject(p||{components:COMP_PRESETS.theory100.map(c=>mkComp(c))});
+  subjects.push(s);
+  renderSubjects();recalc();
+}
+function removeSubject(id){subjects=subjects.filter(s=>s.id!==id);renderSubjects();recalc();}
+
+// ═══════════════════════════════════════════════
+// COMPONENT MUTATIONS
+// ═══════════════════════════════════════════════
+function addComp(sid){
+  const s=subjects.find(s=>s.id===sid);if(!s)return;
+  s.components.push(mkComp({name:'New Component',maxMarks:0,passMarks:0}));
+  renderSubjects();recalc();
+}
+function removeComp(sid,cid){
+  const s=subjects.find(s=>s.id===sid);if(!s)return;
+  if(s.components.length===1){showToast('⚠️ Need at least 1 component');return;}
+  s.components=s.components.filter(c=>c.id!==cid);
+  renderSubjects();recalc();
+}
+function moveComp(sid,cid,dir){
+  const s=subjects.find(s=>s.id===sid);if(!s)return;
+  const i=s.components.findIndex(c=>c.id===cid);
+  const j=i+dir;
+  if(j<0||j>=s.components.length)return;
+  [s.components[i],s.components[j]]=[s.components[j],s.components[i]];
+  renderSubjects();recalc();
+}
+function updateComp(sid,cid,field,val){
+  const s=subjects.find(s=>s.id===sid);if(!s)return;
+  const c=s.components.find(c=>c.id===cid);if(!c)return;
+  const numF=['maxMarks','passMarks','obtained'];
+  if(numF.includes(field))c[field]=val===''?'':parseFloat(val);
+  else if(field==='includeInPass'||field==='includeInTotal'||field==='isExam')c[field]=!!val;
+  else c[field]=val;
+  if(field==='obtained'&&val!=='')c.estGrade='';
+  if(field==='isExam'&&val){
+    // only one exam comp per subject
+    s.components.forEach(x=>{if(x.id!==cid)x.isExam=false;});
+  }
+  if(field==='mode'&&val==='marks'){c.grade='';}
+  if(field==='mode'&&val==='grade'){c.obtained='';}
+  if(field==='grade'&&val){
+    const gInfo=getGradeByName(val);
+    if(gInfo){
+      const mid=GRADE_MID[val]/100;
+      c.obtained=Math.round(mid*(parseFloat(c.maxMarks)||0));
+    }
+  }
+  updateCardResult(s);recalc();
+}
+function setEstGrade(sid,cid,grade){
+  const s=subjects.find(s=>s.id===sid);if(!s)return;
+  const c=s.components.find(c=>c.id===cid);if(!c)return;
+  c.estGrade=c.estGrade===grade?'':grade;
+  updateCardResult(s);recalc();
+}
+function updateSubjField(sid,field,val){
+  const s=subjects.find(s=>s.id===sid);if(!s)return;
+  if(field==='credits')s.credits=val===''?'':parseFloat(val);
+  else if(field==='audit'||field==='includeInSPI')s[field]=!!val;
+  else if(['L','T','P','PBL'].includes(field))s.teachingScheme[field]=parseInt(val)||0;
+  else s[field]=val;
+  updateCardResult(s);recalc();
+}
+
+// ═══════════════════════════════════════════════
+// MARK COMPUTATION
+// ═══════════════════════════════════════════════
+function effectiveObtained(c){
+  // returns {val, isBlank, isEst}
+  const raw=c.obtained;
+  const isBlank=(raw===''||raw===null||raw===undefined||isNaN(parseFloat(raw)));
+  if(!isBlank)return{val:parseFloat(raw),isBlank:false,isEst:false};
+  if(c.isExam&&c.estGrade){
+    const gInfo=getGradeByName(c.estGrade);
+    if(gInfo){
+      const val=Math.round((GRADE_MID[c.estGrade]/100)*(parseFloat(c.maxMarks)||0));
+      return{val,isBlank:false,isEst:true};
+    }
+  }
+  return{val:0,isBlank:true,isEst:false};
+}
+
+function compute(s){
+  let totalMax=0,totalObt=0,anyFF=false,failComps=[],hasBlank=false,hasEst=false;
+  s.components.forEach(c=>{
+    if(!c.includeInTotal)return;
+    const max=parseFloat(c.maxMarks)||0;
+    totalMax+=max;
+    const {val,isBlank,isEst}=effectiveObtained(c);
+    if(isBlank)hasBlank=true;
+    if(isEst)hasEst=true;
+    totalObt+=isBlank?0:val;
+    if(c.includeInPass){
+      const pm=parseFloat(c.passMarks)||0;
+      const got=isBlank?0:val;
+      if(pm>0&&got<pm){anyFF=true;failComps.push(c.name);}
+    }
+  });
+  const pct=totalMax>0?(totalObt/totalMax)*100:0;
+  const {grade,pts}=getGradeByPct(pct);
+  return{totalObt,totalMax,pct,grade:anyFF?'FF':grade,pts:anyFF?0:pts,anyFF,failComps,hasBlank,hasEst};
+}
+
+// exam component for target prediction (isExam flag)
+function examComp(s){
+  return s.components.find(c=>c.isExam)||null;
+}
+
+// min obtained in exam comp to reach targetPts overall
+function minExamNeeded(s,ec,targetPts){
+  const tg=GRADES.find(g=>g.pts===targetPts);if(!tg)return null;
+  let fixedObt=0,totalMax=0;
+  s.components.forEach(c=>{
+    if(!c.includeInTotal)return;
+    totalMax+=parseFloat(c.maxMarks)||0;
+    if(c.id!==ec.id){
+      const {val,isBlank}=effectiveObtained(c);
+      fixedObt+=isBlank?0:val;
+    }
+  });
+  const minTotal=Math.ceil((tg.min/100)*totalMax);
+  const needed=minTotal-fixedObt;
+  const pm=parseFloat(ec.passMarks)||0;
+  const mx=parseFloat(ec.maxMarks)||0;
+  return Math.max(pm,Math.min(needed,mx));
+}
+
+function spiWithEstGrade(sid,cid,estGrade){
+  let tw=0,tc=0;
+  subjects.forEach(s=>{
+    const cr=parseFloat(s.credits)||0;
+    if(!s.includeInSPI){return;}
+    let r;
+    if(s.id===sid){
+      const fake={...s,components:s.components.map(c=>{
+        if(c.id!==cid)return c;
+        const mx=parseFloat(c.maxMarks)||0;
+        return{...c,obtained:Math.round((GRADE_MID[estGrade]/100)*mx),estGrade:''};
+      })};
+      r=compute(fake);
+    } else { r=compute(s); }
+    tw+=r.pts*cr; tc+=cr;
+  });
+  return tc>0?tw/tc:0;
+}
+
+// ═══════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════
+function renderSubjects(){
+  const list=document.getElementById('subjectsList');
+  list.innerHTML='';
+  subjects.forEach((s,i)=>{
+    const div=document.createElement('div');
+    div.className='subj-card';
+    div.id='card_'+s.id;
+    div.innerHTML=cardHTML(s,i+1);
+    list.appendChild(div);
+  });
+}
+
+function tsDisplay(ts){
+  const parts=[];
+  ['L','T','P','PBL'].forEach(k=>{if(ts[k])parts.push(`${k}:<span>${ts[k]}</span>`);});
+  return parts.length?parts.join(' '):'<span style="opacity:.5">—</span>';
+}
+
+function cardHTML(s,num){
+  const r=compute(s);
+  const totalMax=s.components.filter(c=>c.includeInTotal).reduce((a,c)=>a+(parseFloat(c.maxMarks)||0),0);
+  const ts=s.teachingScheme||{L:0,T:0,P:0,PBL:0};
+
+  const compCards=s.components.map((c,ci)=>{
+    const isFirst=ci===0,isLast=ci===s.components.length-1;
+    const {val,isBlank,isEst}=effectiveObtained(c);
+    const pm=parseFloat(c.passMarks)||0;
+    const passBadge=c.includeInPass&&pm>0
+      ? `<span class="comp-pass-badge ${!isBlank&&val>=pm?'pass-ok':'pass-fail'}">${!isBlank&&val>=pm?'✓ pass':'✗ fail'}</span>`
+      : '';
+
+    let obtainedInput;
+    if(c.mode==='grade'){
+      const opts=GRADES.filter(g=>g.grade!=='FF').map(g=>`<option value="${g.grade}"${c.grade===g.grade?' selected':''}>${g.grade}</option>`).join('');
+      obtainedInput=`<select onchange="updateComp(${s.id},'${c.id}','grade',this.value)"><option value="">Grade…</option>${opts}</select>`;
+    } else {
+      const ph=c.isExam?'Blank=target':'Enter';
+      obtainedInput=`<input type="number" value="${c.obtained}" min="0" max="${c.maxMarks}" placeholder="${ph}"
+        oninput="updateComp(${s.id},'${c.id}','obtained',this.value)">`;
+    }
+
+    return `<div class="comp-card${c.isExam?' is-exam-comp':''}" id="comp_${s.id}_${c.id}">
+      <div class="comp-header">
+        <input class="comp-name-inp" value="${escHtml(c.name)}" placeholder="Component name"
+          oninput="updateComp(${s.id},'${c.id}','name',this.value)">
+        <div class="comp-actions">
+          <button class="comp-btn exam-star${c.isExam?' active':''}" title="${c.isExam?'Exam comp (target prediction)':'Set as exam comp'}"
+            onclick="updateComp(${s.id},'${c.id}','isExam',${!c.isExam})">🎯</button>
+          <button class="comp-btn" title="Move up" onclick="moveComp(${s.id},'${c.id}',-1)" ${isFirst?'disabled style="opacity:.3"':''}>↑</button>
+          <button class="comp-btn" title="Move down" onclick="moveComp(${s.id},'${c.id}',1)" ${isLast?'disabled style="opacity:.3"':''}>↓</button>
+          <button class="comp-btn danger" title="Delete component" onclick="removeComp(${s.id},'${c.id}')">×</button>
+        </div>
+      </div>
+      <div class="comp-fields">
+        <div class="comp-field">
+          <label>Max ${passBadge}</label>
+          <input type="number" value="${c.maxMarks}" min="0"
+            oninput="updateComp(${s.id},'${c.id}','maxMarks',this.value)">
+        </div>
+        <div class="comp-field">
+          <label>Pass (0=none)</label>
+          <input type="number" value="${c.passMarks}" min="0"
+            oninput="updateComp(${s.id},'${c.id}','passMarks',this.value)">
+        </div>
+        <div class="comp-field">
+          <label>Mode</label>
+          <div class="comp-mode-tabs">
+            <button class="comp-mode-tab${c.mode==='marks'?' active':''}"
+              onclick="updateComp(${s.id},'${c.id}','mode','marks')">Marks</button>
+            <button class="comp-mode-tab${c.mode==='grade'?' active':''}"
+              onclick="updateComp(${s.id},'${c.id}','mode','grade')">Grade</button>
+          </div>
+        </div>
+        <div class="comp-field">
+          <label>Obtained${isEst?' ✦ est':''}</label>
+          ${obtainedInput}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  return `
+<div class="subj-header" onclick="toggleBody(${s.id})">
+  <div class="subj-num">${num}</div>
+  <div class="subj-info">
+    <div class="subj-name" id="sname_${s.id}">${escHtml(s.name)||'Untitled Subject'}</div>
+    <div class="subj-meta">${s.credits||'?'} cr · Max ${totalMax} marks · ${s.components.length} components</div>
+  </div>
+  <div class="subj-right">
+    <div id="gpill_${s.id}"></div>
+    <button class="btn-remove" onclick="event.stopPropagation();removeSubject(${s.id})" title="Remove">×</button>
+  </div>
+</div>
+<div class="subj-body open" id="body_${s.id}">
+
+  <div class="section-mini">Subject Info</div>
+  <div class="grid-2" style="margin-bottom:10px">
+    <div class="field">
+      <label>Subject Name</label>
+      <input type="text" value="${escHtml(s.name)}" placeholder="Subject Name"
+        oninput="updateSubjField(${s.id},'name',this.value);document.getElementById('sname_${s.id}').textContent=this.value||'Untitled Subject'">
+    </div>
+    <div class="field">
+      <label>Subject Code</label>
+      <input type="text" value="${escHtml(s.subjectCode)}" placeholder="Subject Code"
+        oninput="updateSubjField(${s.id},'subjectCode',this.value)">
+    </div>
+  </div>
+  <div class="grid-2" style="margin-bottom:10px">
+    <div class="field">
+      <label>Credits</label>
+      <input type="number" value="${s.credits}" min="1" max="10"
+        oninput="updateSubjField(${s.id},'credits',this.value)">
+    </div>
+    <div class="field">
+      <label>Include in SPI</label>
+      <select onchange="updateSubjField(${s.id},'includeInSPI',this.value==='1')">
+        <option value="1" ${s.includeInSPI?'selected':''}>Yes</option>
+        <option value="0" ${!s.includeInSPI?'selected':''}>No (Audit)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="section-mini">Teaching Scheme <span style="font-size:.6rem;opacity:.6;text-transform:none;letter-spacing:0">· optional</span></div>
+  <div class="ts-row" style="margin-bottom:6px">
+    <div class="ts-chip">${tsDisplay(ts)}</div>
+  </div>
+  <div class="ts-fields" style="margin-bottom:12px">
+    ${['L','T','P','PBL'].map(k=>`<div class="comp-field">
+      <label>${k}</label>
+      <input type="number" value="${ts[k]||0}" min="0" oninput="updateSubjField(${s.id},'${k}',this.value)">
+    </div>`).join('')}
+  </div>
+
+  <div class="section-mini">Components <span style="font-size:.6rem;opacity:.6;text-transform:none;letter-spacing:0">· 🎯 = exam (target prediction)</span></div>
+  <div class="comp-list" id="complist_${s.id}">${compCards}</div>
+  <button class="btn-add-comp" onclick="addComp(${s.id})">＋ Add Component</button>
+
+  <div id="result_${s.id}"></div>
+</div>`;
+}
+
+function updateCardResult(s){
+  const el=document.getElementById('result_'+s.id);
+  const pill=document.getElementById('gpill_'+s.id);
+  if(!el)return;
+
+  const r=compute(s);
+  const ec=examComp(s);
+
+  // check if anything entered
+  const anyEntered=s.components.some(c=>{
+    const {isBlank}=effectiveObtained(c);
+    return !isBlank||c.grade;
+  });
+
+  if(!anyEntered){
+    el.innerHTML='<div style="font-size:.78rem;color:var(--text2);padding:4px 0;margin-top:8px">Enter marks above to see result</div>';
+    if(pill)pill.innerHTML='';
+    if(ec)_renderTargetBox(s,ec,el,null);
+    return;
+  }
+
+  const c=gradeColor(r.grade);
+  const gc=gradeClass(r.grade);
+  const failWarn=r.anyFF?`<div class="warn-text">⚠️ Failed: ${r.failComps.join(', ')}</div>`:'';
+  const estNote=r.hasEst?`<div style="font-size:.68rem;color:var(--primary);margin-top:4px;font-family:var(--font-mono)">📊 Contains estimated marks (✦) — actual marks blank</div>`:'';
+
+  el.innerHTML=`
+    <div class="result-strip">
+      <div class="rs-item"><div class="rs-lbl">Total</div><div class="rs-val">${r.totalObt}/${r.totalMax}</div></div>
+      <div class="rs-item"><div class="rs-lbl">Percent</div><div class="rs-val">${r.pct.toFixed(1)}%</div></div>
+      <div class="rs-item"><div class="rs-lbl">Grade</div><div class="rs-val" style="color:${c}">${r.grade}</div></div>
+      <div class="rs-item"><div class="rs-lbl">SPI Pts</div><div class="rs-val" style="color:${c}">${r.pts}</div></div>
+      <div class="rs-item"><div class="rs-lbl">Cr×Pts</div><div class="rs-val" style="color:var(--primary)">${r.pts*(parseFloat(s.credits)||0)}</div></div>
+    </div>
+    ${failWarn}${estNote}
+    <div id="target_${s.id}"></div>`;
+
+  if(pill)pill.innerHTML=`<span class="grade-badge ${gc}" style="color:${c};background:${c}18;border:1px solid ${c}44">${r.grade}${r.hasEst?' ✦':''}</span>`;
+
+  if(ec)_renderTargetBox(s,ec,el,r);
+}
+
+function _renderTargetBox(s,ec,el,computedResult){
+  const tEl=document.getElementById('target_'+s.id);
+  if(!tEl)return;
+
+  // only show when exam comp obtained is raw-blank (not grade mode, no est)
+  const rawBlank=ec.mode==='marks'&&(ec.obtained===''||ec.obtained===null||isNaN(parseFloat(ec.obtained)));
+  if(!rawBlank){tEl.innerHTML='';return;}
+
+  const neededPts=Math.ceil(targetSPI);
+  const gmax=parseFloat(ec.maxMarks)||0;
+
+  const gradeRows=GRADES.filter(g=>g.grade!=='FF').map(g=>{
+    const needed=minExamNeeded(s,ec,g.pts);
+    const feasible=needed!==null&&needed<=gmax;
+    const previewSPI=feasible?spiWithEstGrade(s.id,ec.id,g.grade):null;
+    const isSelected=ec.estGrade===g.grade;
+    const cls=['gp-btn',isSelected?'selected':'',!feasible?'impossible':''].join(' ').trim();
+    const spiStr=previewSPI!==null?` → SPI ${previewSPI.toFixed(2)}`:'';
+    return `<button class="${cls}"
+      onclick="${feasible?`setEstGrade(${s.id},'${ec.id}','${g.grade}')`:'void(0)'}"
+      title="${feasible?`Need ${needed}/${gmax}${spiStr}`:'Not feasible'}">
+      ${g.grade}${feasible?` <span style="opacity:.7;font-size:.62rem">${needed}/${gmax}</span>`:''}
+    </button>`;
+  }).join('');
+
+  const ng=minExamNeeded(s,ec,neededPts);
+  const feasible=ng!==null&&ng<=gmax;
+  const tgGrade=GRADES.find(g=>g.pts===neededPts);
+
+  let previewBlock='';
+  if(ec.estGrade){
+    const estSPI=spiWithEstGrade(s.id,ec.id,ec.estGrade);
+    const estNeeded=minExamNeeded(s,ec,getGradeByName(ec.estGrade)?.pts||0);
+    const ecol=estSPI>=targetSPI?'var(--green)':estSPI>=targetSPI-0.5?'var(--yellow)':'var(--red)';
+    previewBlock=`<div class="spi-preview-row">
+      <div><div class="spi-prev-lbl">If ${ec.name} = ${ec.estGrade}</div>
+        <div style="font-size:.72rem;font-family:var(--font-mono);color:var(--text2)">Need ${estNeeded}/${gmax} marks</div></div>
+      <div class="spi-prev-arrow">→</div>
+      <div><div class="spi-prev-lbl">SPI</div><div class="spi-prev-val" style="color:${ecol}">${estSPI.toFixed(2)}</div></div>
+      <div style="font-size:.7rem;color:${ecol};font-family:var(--font-mono)">${estSPI>=targetSPI?'✅ Target met!':'⚠️ '+(estSPI>=targetSPI-0.5?'Close':'Below target')}</div>
+    </div>`;
+  }
+
+  tEl.innerHTML=`<div class="target-box ${feasible?'warn':'fail'}" style="gap:6px">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span>🎯</span>
+      <span>For SPI ${targetSPI.toFixed(1)} → need <b>${feasible?ng:'IMPOSSIBLE'}/${gmax}</b> in <b>${ec.name}</b> (<b>${tgGrade?.grade||'?'}</b>${feasible?`, ${((ng/gmax)*100).toFixed(0)}%`:''}).</span>
+    </div>
+    <div style="font-size:.7rem;color:var(--text2);margin-top:2px">Pick expected ${ec.name} grade to preview SPI:</div>
+    <div class="gtu-grade-picker">${gradeRows}</div>
+    ${previewBlock}
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════
+// RECALC
+// ═══════════════════════════════════════════════
+function recalc(){
+  subjects.forEach(s=>updateCardResult(s));
+  let tw=0,tc=0,anyFF=false;
+  const rows=subjects.map(s=>{
+    const r=compute(s);
+    const cr=parseFloat(s.credits)||0;
+    if(s.includeInSPI){tw+=r.pts*cr;tc+=cr;}
+    if(r.grade==='FF')anyFF=true;
+    return{s,r,cr};
+  });
+  const spi=tc>0?tw/tc:0;
+  const hasEst=subjects.some(s=>s.components.some(c=>c.isExam&&c.estGrade&&(c.obtained===''||isNaN(parseFloat(c.obtained)))));
+
+  const rEl=document.getElementById('resultSpi');
+  const sEl=document.getElementById('statusMsg');
+  if(subjects.length===0){
+    rEl.textContent='—';rEl.style.color='var(--text2)';
+    sEl.className='status-msg s-yellow';sEl.textContent='Add subjects to begin';
+  } else {
+    if(tc>0&&!hasEst)rEl.textContent=spi.toFixed(2);
+    else if(tc>0)rEl.textContent='~'+spi.toFixed(2);
+    else rEl.textContent='—';
+    rEl.style.color=tc===0?'var(--text2)':spi>=targetSPI?'var(--green)':spi>=targetSPI-0.5?'var(--yellow)':'var(--red)';
+    if(anyFF){sEl.className='status-msg s-red';sEl.textContent='❌ FF in one or more subjects — check pass marks!';}
+    else if(tc===0){sEl.className='status-msg s-yellow';sEl.textContent='Set credits to calculate SPI';}
+    else if(spi>=targetSPI){sEl.className='status-msg s-green';sEl.textContent=`✅ ${hasEst?'Estimated ':''}SPI ${spi.toFixed(2)} — Target ${targetSPI.toFixed(1)} ${hasEst?'likely ':''}achieved! 🎉`;}
+    else{sEl.className='status-msg s-yellow';sEl.textContent=`⚠️ ${hasEst?'Est. ':''}SPI ${spi.toFixed(2)} · Need ${(targetSPI-spi).toFixed(2)} more${hasEst?' (estimated)':''}`;}
+  }
+
+  document.getElementById('breakdownBody').innerHTML=rows.map(({s,r,cr})=>{
+    const c=gradeColor(r.grade);
+    const n=s.name||'Untitled';const disp=n.length>18?n.substring(0,18)+'…':n;
+    const note=r.hasEst?'~ est':r.hasBlank?'blank':'';
+    const auditNote=!s.includeInSPI?'audit':'';
+    return `<tr${!s.includeInSPI?' style="opacity:.5"':''}>
+      <td title="${escHtml(n)}">${disp}</td>
+      <td>${r.totalObt}/${r.totalMax}</td>
+      <td>${r.pct.toFixed(1)}%</td>
+      <td style="color:${c};font-weight:700">${r.grade}</td>
+      <td>${r.pts}</td><td>${cr}</td>
+      <td style="color:var(--primary);font-weight:700">${s.includeInSPI?r.pts*cr:'—'}</td>
+      <td style="font-size:.68rem;color:var(--text2)">${auditNote||note}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('ftCr').textContent=tc;
+  document.getElementById('ftPts').textContent=`${tw} → ${spi.toFixed(2)}`;
+
+  document.getElementById('sidebarSpi').textContent=tc>0?(hasEst?'~':'')+spi.toFixed(2):'—';
+  document.getElementById('sidebarSpi').style.color=tc>0?(spi>=targetSPI?'var(--green)':spi>=targetSPI-0.5?'var(--yellow)':'var(--red)'):'var(--primary)';
+  document.getElementById('sidebarStatus').textContent=
+    subjects.length===0?'No subjects':
+    anyFF?'Has FF subject':
+    spi>=targetSPI?`Target ${targetSPI.toFixed(1)} met ✓`:`${(targetSPI-spi).toFixed(2)} pts short`;
+  document.getElementById('statCredits').textContent=tc;
+  document.getElementById('statSubjects').textContent=subjects.length;
+
+  document.getElementById('sidebarSubjectList').innerHTML=rows.map(({s,r})=>{
+    const c=gradeColor(r.grade);
+    const n=s.name||'Untitled';const disp=n.length>20?n.substring(0,20)+'…':n;
+    return `<div class="subj-sidebar-item">
+      <span class="ssi-name">${escHtml(disp)}</span>
+      <span class="grade-badge" style="color:${c};background:${c}18;border:1px solid ${c}44">${r.grade}${r.hasEst?' ~':''}</span>
+    </div>`;
+  }).join('')||'<div style="font-size:.78rem;color:var(--text2);padding:4px">No subjects added</div>';
+}
+
+// ═══════════════════════════════════════════════
+// PRESETS
+// ═══════════════════════════════════════════════
+function loadPreset(key){
+  if(key==='ce4'){
+    clearAll(true);
+    [
+      {name:'Operating Systems',credits:4,components:COMP_PRESETS.tp200.map(c=>mkComp({...c})),mid:13},
+      {name:'Object Oriented Programming',credits:4,components:COMP_PRESETS.tp200.map(c=>mkComp({...c})),mid:23},
+      {name:'Analysis & Design of Algorithms',credits:4,components:COMP_PRESETS.tp200.map(c=>mkComp({...c})),mid:26},
+      {name:'Computer Org. & Architecture',credits:3,components:COMP_PRESETS.tp200.map(c=>mkComp({...c})),mid:21},
+      {name:'Discrete Math & Graph Theory',credits:3,components:COMP_PRESETS.tp130.map(c=>mkComp({...c})),mid:25},
+      {name:'Env. Science & Sustainability',credits:2,components:COMP_PRESETS.internal.map(c=>mkComp({...c})),mid:28,int:20},
+    ].forEach(p=>{
+      const s=mkSubject({name:p.name,credits:p.credits,components:p.components});
+      // pre-fill mid marks if provided
+      if(p.mid!==undefined){
+        const mc=s.components.find(c=>c.name==='Mid Exam');
+        if(mc)mc.obtained=p.mid;
+      }
+      if(p.int!==undefined){
+        const ic=s.components.find(c=>c.name==='Internal');
+        if(ic)ic.obtained=p.int;
+      }
+      subjects.push(s);
+    });
+    renderSubjects();recalc();
+  } else if(COMP_PRESETS[key]){
+    addSubject({components:COMP_PRESETS[key].map(c=>mkComp({...c}))});
+  }
+}
+function clearAll(silent=false){subjects=[];subCtr=0;compCtr=0;renderSubjects();recalc();}
+function toggleBody(id){const b=document.getElementById('body_'+id);if(b)b.classList.toggle('open');}
+
+// ═══════════════════════════════════════════════
+// SLIDER
+// ═══════════════════════════════════════════════
+function onSlider(){
+  targetSPI=parseFloat(document.getElementById('spiSlider').value);
+  document.getElementById('targetDisp').textContent=targetSPI.toFixed(2);
+  recalc();
+}
+
+// ═══════════════════════════════════════════════
+// SIDEBAR / THEME
+// ═══════════════════════════════════════════════
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('visible');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('visible');}
+function toggleTheme(){
+  const html=document.documentElement;
+  const isDark=html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme',isDark?'light':'dark');
+  document.getElementById('themeBtn').textContent=isDark?'🌙':'☀️';
+}
+
+// ═══════════════════════════════════════════════
+// SAVE / LOAD
+// ═══════════════════════════════════════════════
+const STORAGE_KEY='gtu_spi_saves_v1';
+const AUTO_KEY='gtu_spi_auto_v1';
+
+function getSaves(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch{return[];}}
+function putSaves(arr){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(arr));}catch(e){}}
+
+function captureState(){
+  return{
+    studentName:document.getElementById('studentName').value,
+    enrollNo:document.getElementById('enrollNo').value,
+    branch:document.getElementById('branch').value,
+    sem:document.getElementById('sem').value,
+    targetSPI,
+    subjects:JSON.parse(JSON.stringify(subjects)),
+    subCtr,compCtr,
+  };
+}
+
+function applyState(state){
+  if(state.studentName!==undefined)document.getElementById('studentName').value=state.studentName;
+  if(state.enrollNo!==undefined)document.getElementById('enrollNo').value=state.enrollNo;
+  if(state.branch!==undefined)document.getElementById('branch').value=state.branch;
+  if(state.sem!==undefined)document.getElementById('sem').value=state.sem;
+  if(state.targetSPI!==undefined){
+    targetSPI=state.targetSPI;
+    document.getElementById('spiSlider').value=targetSPI;
+    document.getElementById('targetDisp').textContent=targetSPI.toFixed(2);
+  }
+  compCtr=state.compCtr||0;
+  // migrate old format subjects
+  subjects=(state.subjects||[]).map(raw=>migrateSubject(raw)).map(raw=>{
+    // ensure all components go through mkComp to get defaults
+    return{...raw,components:(raw.components||[]).map(c=>mkComp(c))};
+  });
+  subCtr=state.subCtr||subjects.length;
+  renderSubjects();
+  recalc();
+}
+
+function doSave(){
+  const name=document.getElementById('saveNameInput').value.trim();
+  if(!name){showToast('⚠️ Enter a preset name first!');return;}
+  if(subjects.length===0){showToast('⚠️ No subjects to save!');return;}
+  const saves=getSaves();
+  const idx=saves.findIndex(s=>s.name===name);
+  const entry={name,savedAt:Date.now(),state:captureState()};
+  if(idx>=0)saves[idx]=entry;else saves.unshift(entry);
+  putSaves(saves);
+  document.getElementById('saveNameInput').value='';
+  renderSavedList();
+  showToast(`✅ Saved "${name}"`);
+}
+function loadSave(idx){
+  const saves=getSaves();if(!saves[idx])return;
+  applyState(saves[idx].state);
+  closeSaveModal();
+  showToast(`📂 Loaded "${saves[idx].name}"`);
+}
+function deleteSave(idx){
+  const saves=getSaves();
+  const name=saves[idx]?.name||'';
+  saves.splice(idx,1);putSaves(saves);
+  renderSavedList();showToast(`🗑 Deleted "${name}"`);
+}
+
+function renderSavedList(){
+  const saves=getSaves();
+  const el=document.getElementById('savedList');if(!el)return;
+  if(saves.length===0){
+    el.innerHTML='<div class="empty-saves"><span>📭</span>No saved presets yet.<br>Fill in subjects and tap Save!</div>';return;
+  }
+  el.innerHTML=saves.map((s,i)=>{
+    const d=new Date(s.savedAt);
+    const dateStr=d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+    const subCount=s.state?.subjects?.length||0;
+    const spi=s.state?.targetSPI?.toFixed(1)||'—';
+    return `<div class="saved-item">
+      <div class="saved-item-info">
+        <div class="saved-item-name">${escHtml(s.name)}</div>
+        <div class="saved-item-meta">${subCount} subjects · Target ${spi} · ${dateStr}</div>
+      </div>
+      <div class="saved-item-actions">
+        <button class="btn-load-preset" onclick="loadSave(${i})">Load</button>
+        <button class="btn-del-preset" onclick="deleteSave(${i})" title="Delete">×</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function openSaveModal(){
+  const inp=document.getElementById('saveNameInput');
+  if(!inp.value.trim()){
+    const n=document.getElementById('studentName').value.trim();
+    const sem=document.getElementById('sem').value;
+    const branch=document.getElementById('branch').value.trim();
+    const parts=[n||branch,sem?`Sem ${sem}`:''].filter(Boolean);
+    if(parts.length)inp.value=parts.join(' – ');
+  }
+  renderSavedList();
+  document.getElementById('saveModal').classList.add('open');
+  setTimeout(()=>inp.focus(),120);
+}
+function closeSaveModal(){document.getElementById('saveModal').classList.remove('open');}
+
+document.getElementById('saveModal').addEventListener('click',function(e){if(e.target===this)closeSaveModal();});
+document.getElementById('saveNameInput').addEventListener('keydown',function(e){if(e.key==='Enter')doSave();});
+
+// ═══════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════
+let _toastTimer;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer=setTimeout(()=>t.classList.remove('show'),2400);
+}
+
+// ═══════════════════════════════════════════════
+// AUTO-SAVE PATCH
+// ═══════════════════════════════════════════════
+const _recalcBase=recalc;
+recalc=function(){
+  _recalcBase();
+  try{localStorage.setItem(AUTO_KEY,JSON.stringify(captureState()));}catch(e){}
+};
+
+// ═══════════════════════════════════════════════
+// BOOT
+// ═══════════════════════════════════════════════
+(function autoLoad(){
+  try{
+    const raw=localStorage.getItem(AUTO_KEY);
+    if(!raw)return;
+    const state=JSON.parse(raw);
+    if(state&&state.subjects&&state.subjects.length>0){applyState(state);return;}
+  }catch(e){}
+  recalc();
+})();
+</script>
+
+<footer style="text-align:center;padding:18px 16px 28px;border-top:1px solid var(--border);margin-top:8px;">
+  <span style="font-size:.68rem;font-family:var(--font-mono);color:var(--text2);letter-spacing:.4px;">
+    Built for GTU students, by a GTU student &nbsp;·&nbsp;
+    <a href="https://github.com/JayVegada/gtu-spi-calculator" target="_blank" rel="noopener"
+       style="color:var(--primary);text-decoration:none;font-weight:600;">@JayVegada</a>
+    &nbsp;·&nbsp; MIT License
+  </span>
+</footer>
+
+</body>
+</html>
