@@ -2,7 +2,7 @@
 
 A smart, mobile-friendly SPI (Semester Performance Index) calculator for **Gujarat Technological University** students — built as a single HTML file with zero dependencies.
 
-> **Live Demo →** [jayvegada.github.io/gtu-spi-calculator](https://jayvegada.github.io/gtu-spi-calculator/GTU-SPI-CALCULATOR.html)
+> **Live Demo →** [jayvegada.github.io/gtu-spi-calculator](https://jayvegada.github.io/gtu-spi-calculator/)
 
 ---
 
