@@ -8,7 +8,7 @@ A smart, mobile-friendly SPI (Semester Performance Index) calculator for **Gujar
 
 ## ✨ Features
 
-- **All 6 GTU subject types** — T+P 200, T+P 150, T+P 130, T+P 120, Theory 100, Theory 80, No GTU (internal-only)
+- **All GTU subject types** — T+P 200, T+P 150, T+P 130, T+P 120, Theory 100, Theory 80, No GTU (internal-only)
 - **Target SPI prediction** — Set your target SPI and see exactly how many marks you need in the GTU exam
 - **Grade-based entry** — Enter marks as letter grades (AA, AB, BB…) instead of raw numbers
 - **Estimated grade picker** — Blank the GTU exam field → pick an expected grade → instantly preview your SPI
@@ -16,7 +16,7 @@ A smart, mobile-friendly SPI (Semester Performance Index) calculator for **Gujar
 - **Save & Load presets** — Name and store subject configurations in your browser (localStorage)
 - **Auto-save** — Your session is automatically restored when you reopen the page
 - **Dark / Light theme** — Toggleable, remembers your preference
-- **Mobile-first design** — Works great on phones, tablets, and desktops
+- **Dynamic design** — Works great on phones, tablets, and desktops
 - **100% offline** — No server, no login, no data sent anywhere
 
 ---
