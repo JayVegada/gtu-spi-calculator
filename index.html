@@ -13,52 +13,75 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>GTU SPI Calculator — by Jay Vegada</title>
 <meta name="author" content="Jay Vegada (@JayVegada)">
 <meta name="description" content="Free GTU SPI/CGPA calculator for Gujarat Technological University students. Supports all subject types, target SPI prediction, grade picker, and offline use.">
+<meta name="theme-color" content="#5d2a1a" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="GTU SPI Calculator">
+<meta property="og:description" content="Calculate your GTU Semester Performance Index and predict the exam marks you need to hit your target SPI.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://jayvegada.github.io/gtu-spi-calculator/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GTU SPI Calculator">
+<meta name="twitter:description" content="Calculate your GTU SPI and predict the exam marks you need to hit your target.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%235d2a1a'/%3E%3Ctext x='50' y='68' font-size='58' font-family='Georgia,serif' fill='%23fbe1d1' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  /* Vercel light palette */
-  --bg: #fafafa; --surface: #ffffff; --card: #ffffff; --card-hi: #fafafa;
-  --primary: #171717; --primary-soft: rgba(23,23,23,0.06); --primary-text: #ffffff;
-  --text: #171717; --text2: #4d4d4d; --border: #ebebeb;
-  --sidebar-bg: #ffffff; --input-bg: #fafafa;
-  --green: #1a7f37; --green-bg: rgba(26,127,55,0.10);
-  --yellow: #9a6700; --yellow-bg: rgba(154,103,0,0.10);
-  --red: #cf222e; --red-bg: rgba(207,34,46,0.10);
-  --shadow: rgba(0,0,0,0.08) 0px 0px 0px 1px;
-  --shadow-md: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px 0px;
-  --radius: 6px; --radius-sm: 6px;
-  --font: 'Plus Jakarta Sans',sans-serif;
-  --font-head: 'Bricolage Grotesque',sans-serif;
-  --font-mono: 'JetBrains Mono',monospace;
+  --bg: #fafafb; --surface: #ffffff; --card: #f2f2f3;
+  --primary: #5d2a1a; --primary-soft: #fbe1d1; --primary-soft-a: rgba(93,42,26,0.08);
+  --on-accent: #ffffff;
+  --text: #17191c; --text2: #6b6f78; --border: #e6e3e0;
+  --sidebar-bg: #f2f2f3; --input-bg: #fafafb;
+  --green: #059669; --green-bg: rgba(5,150,105,0.1);
+  --yellow: #b45309; --yellow-bg: rgba(217,119,6,0.1);
+  --red: #dc2626; --red-bg: rgba(220,38,38,0.1);
+  --shadow: 0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06),0 2px 4px rgba(0,0,0,0.05);
+  --radius: 12px; --radius-sm: 8px; --radius-pill: 9999px;
+  --font: 'Inter',sans-serif; --font-head: 'Plus Jakarta Sans',sans-serif; --font-mono: 'JetBrains Mono',monospace;
+  --font-serif: 'Source Serif 4', Georgia, ui-serif, serif;
+  --grid-line: rgba(93,42,26,0.05); --grain-blend: multiply; --grain-opacity: 0.035;
 }
 [data-theme="dark"] {
-  /* Linear dark palette */
-  --bg: #08090a; --surface: #0f1011; --card: #161718; --card-hi: #23252a;
-  --primary: #e4f222; --primary-soft: rgba(228,242,34,0.10); --primary-text: #08090a;
-  --text: #f7f8f8; --text2: #8a8f98; --border: #23252a;
-  --sidebar-bg: #0f1011; --input-bg: #161718;
-  --green: #27a644; --green-bg: rgba(39,166,68,0.10);
-  --yellow: #d29922; --yellow-bg: rgba(210,153,34,0.10);
-  --red: #eb5757; --red-bg: rgba(235,87,87,0.10);
-  --shadow: rgb(35,37,42) 0px 0px 0px 1px inset;
-  --shadow-md: rgba(0,0,0,0.4) 0px 2px 4px 0px, rgb(35,37,42) 0px 0px 0px 1px inset;
-  --radius: 12px; --radius-sm: 6px;
+  --bg: #0b1220; --surface: #111827; --card: #1f2937;
+  --primary: #e3a479; --primary-soft: rgba(227,164,121,0.14); --primary-soft-a: rgba(227,164,121,0.1);
+  --on-accent: #17191c;
+  --text: #f9fafb; --text2: #9ca3af; --border: #374151;
+  --sidebar-bg: #0f1929; --input-bg: #1a2535;
+  --green: #34d399; --green-bg: rgba(52,211,153,0.1);
+  --yellow: #fbbf24; --yellow-bg: rgba(251,191,36,0.1);
+  --red: #f87171; --red-bg: rgba(248,113,113,0.1);
+  --shadow: 0 1px 3px rgba(0,0,0,0.3); --shadow-md: 0 4px 6px rgba(0,0,0,0.3);
+  --grid-line: rgba(227,164,121,0.06); --grain-blend: overlay; --grain-opacity: 0.05;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{-webkit-text-size-adjust:100%;}
-body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;min-height:100vh;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);transition:background .2s,color .2s;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;min-height:100vh;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);transition:background .2s,color .2s;}
+
+/* ── ATMOSPHERE: engineer's-grid + gradient mesh + grain, sits behind all content ── */
+.bg-texture{position:fixed;inset:0;z-index:-1;pointer-events:none;transition:background .2s;
+  background:
+    radial-gradient(ellipse 900px 600px at 12% 8%, var(--primary-soft-a) 0%, transparent 60%),
+    radial-gradient(ellipse 700px 700px at 92% 88%, var(--primary-soft-a) 0%, transparent 55%),
+    repeating-linear-gradient(0deg, var(--grid-line) 0, var(--grid-line) 1px, transparent 1px, transparent 24px),
+    repeating-linear-gradient(90deg, var(--grid-line) 0, var(--grid-line) 1px, transparent 1px, transparent 24px);
+}
+.bg-texture::after{content:'';position:absolute;inset:0;mix-blend-mode:var(--grain-blend);opacity:var(--grain-opacity);
+  background-image:url('data:image/svg+xml;utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180"%3E%3Cfilter id="n"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23n)"/%3E%3C/svg%3E');
+}
 
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding-top:calc(12px + env(safe-area-inset-top));box-shadow:var(--shadow);}
 .topbar-left{display:flex;align-items:center;gap:10px;}
-.topbar h1{font-family:var(--font-head);font-size:1rem;font-weight:700;color:var(--text);}
+.topbar h1{font-family:var(--font-serif);font-size:1.15rem;font-weight:400;letter-spacing:-.2px;color:var(--text);}
 .topbar-right{display:flex;align-items:center;gap:8px;}
-.hamburger{background:none;border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px;color:var(--text);cursor:pointer;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;touch-action:manipulation;transition:background .15s;}
+.hamburger{background:none;border:1px solid var(--border);border-radius:var(--radius-pill);padding:8px;color:var(--text);cursor:pointer;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;touch-action:manipulation;transition:background .15s;}
 .hamburger:hover{background:var(--card);}
-.theme-btn{background:none;border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;color:var(--text);cursor:pointer;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;font-size:1rem;touch-action:manipulation;transition:background .15s;}
+.theme-btn{background:none;border:1px solid var(--border);border-radius:var(--radius-pill);padding:8px 10px;color:var(--text);cursor:pointer;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;font-size:1rem;touch-action:manipulation;transition:background .15s;}
 .theme-btn:hover{background:var(--card);}
 
 .app-container{display:flex;flex-direction:column;height:calc(100vh - 60px);overflow:hidden;}
@@ -67,7 +90,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:999;}
 .sidebar-overlay.visible{display:block;}
 .sidebar-header{padding:20px 16px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.sidebar-header h2{font-family:var(--font-head);font-size:1rem;font-weight:700;color:var(--text);}
+.sidebar-header h2{font-family:var(--font-serif);font-size:1.1rem;font-weight:400;letter-spacing:-.2px;color:var(--text);}
 .sidebar-close{background:none;border:none;color:var(--text2);font-size:1.3rem;cursor:pointer;padding:6px;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-sm);touch-action:manipulation;}
 .sidebar-close:hover{background:var(--card);}
 .sidebar-section{padding:16px;}
@@ -87,23 +110,28 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15
 
 .main-content{flex:1;overflow-y:auto;padding:16px;-webkit-overflow-scrolling:touch;}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:var(--shadow);}
-.card-title{font-family:var(--font-head);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.card-title{font-family:var(--font-serif);font-size:1rem;font-weight:400;letter-spacing:-.1px;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.card-title-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;}
+.card-title-row .card-title{margin-bottom:0;}
+.btn-clear-all{display:flex;align-items:center;gap:5px;background:none;border:1px solid var(--border);border-radius:var(--radius-pill);padding:7px 12px;color:var(--text2);font-family:var(--font);font-size:.76rem;font-weight:600;cursor:pointer;touch-action:manipulation;min-height:36px;flex-shrink:0;transition:background .15s cubic-bezier(.16,1,.3,1),color .15s,border-color .15s;}
+.btn-clear-all:hover{background:var(--red-bg);color:var(--red);border-color:var(--red);}
 .field{display:flex;flex-direction:column;gap:5px;}
 .field label{font-size:.72rem;font-weight:600;color:var(--text2);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.4px;}
 .field input,.field select{background:var(--input-bg);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font);font-size:.9rem;padding:10px 12px;min-height:44px;outline:none;transition:border-color .15s,box-shadow .15s;width:100%;-webkit-appearance:none;appearance:none;touch-action:manipulation;}
-.field input:focus,.field select:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft);}
+.field input:focus,.field select:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft-a);}
 .field input::placeholder{color:var(--text2);opacity:.6;}
 .field input[readonly]{opacity:.6;cursor:default;}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .grid-3{display:grid;grid-template-columns:1fr;gap:10px;}
 .grid-4{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 
-.spi-target-card{background:var(--primary-soft);border:1px solid var(--primary);border-radius:var(--radius);padding:16px;margin-bottom:14px;}
+.spi-target-card{background:var(--primary-soft);border:1px solid var(--primary);border-radius:var(--radius);padding:16px;margin-bottom:14px;position:relative;}
+.target-stamp{width:26px;height:26px;border:1.5px dashed var(--primary);border-radius:50%;color:var(--primary);font-family:var(--font-serif);font-size:.6rem;display:flex;align-items:center;justify-content:center;opacity:.32;transform:rotate(-9deg);margin:10px 0 0 auto;letter-spacing:.5px;pointer-events:none;user-select:none;}
 .spi-target-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
 .spi-target-label{font-size:.72rem;font-family:var(--font-mono);color:var(--primary);text-transform:uppercase;letter-spacing:1px;}
 .spi-target-val{font-family:var(--font-mono);font-size:2.2rem;font-weight:700;color:var(--primary);line-height:1;}
 .spi-slider{width:100%;height:6px;-webkit-appearance:none;appearance:none;background:var(--border);border-radius:999px;cursor:pointer;outline:none;touch-action:manipulation;}
-.spi-slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;background:var(--primary);border-radius:50%;box-shadow:0 0 0 3px var(--primary-soft);cursor:pointer;}
+.spi-slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;background:var(--primary);border-radius:50%;box-shadow:0 0 0 3px var(--primary-soft-a);cursor:pointer;}
 .spi-slider::-moz-range-thumb{width:22px;height:22px;background:var(--primary);border-radius:50%;border:none;}
 .slider-ticks{display:flex;justify-content:space-between;margin-top:6px;}
 .slider-ticks span{font-size:.65rem;color:var(--text2);font-family:var(--font-mono);}
@@ -127,7 +155,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15
 .mark-mode-wrap{display:flex;flex-direction:column;gap:5px;}
 .mark-mode-tabs{display:flex;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border);background:var(--card);}
 .mark-mode-tab{flex:1;padding:7px 8px;background:none;border:none;color:var(--text2);font-size:.7rem;font-family:var(--font-mono);cursor:pointer;text-transform:uppercase;letter-spacing:.4px;transition:background .15s,color .15s;touch-action:manipulation;min-height:38px;}
-.mark-mode-tab.active{background:var(--primary);color:var(--primary-text);}
+.mark-mode-tab.active{background:var(--primary);color:var(--on-accent);}
 .mark-mode-tab:not(.active):hover{background:var(--primary-soft);color:var(--primary);}
 
 .result-strip{background:var(--card);border-radius:var(--radius-sm);padding:10px 12px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:12px;}
@@ -142,9 +170,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15
 
 /* GTU grade picker inside target box */
 .gtu-grade-picker{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
-.gp-btn{padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text2);font-size:.72rem;font-family:var(--font-mono);font-weight:600;cursor:pointer;transition:all .15s;touch-action:manipulation;min-height:40px;min-width:60px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1px;}
+.gp-btn{padding:8px 10px;border-radius:var(--radius-pill);border:1px solid var(--border);background:var(--card);color:var(--text2);font-size:.72rem;font-family:var(--font-mono);font-weight:600;cursor:pointer;transition:all .15s;touch-action:manipulation;min-height:40px;min-width:60px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1px;}
 .gp-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-soft);}
-.gp-btn.selected{background:var(--primary);color:var(--primary-text);border-color:var(--primary);}
+.gp-btn.selected{background:var(--primary);color:var(--on-accent);border-color:var(--primary);}
 .gp-btn.impossible{opacity:.35;cursor:not-allowed;text-decoration:line-through;}
 
 /* SPI preview row */
@@ -153,14 +181,24 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15
 .spi-prev-val{font-family:var(--font-mono);font-size:1.1rem;font-weight:700;color:var(--primary);}
 .spi-prev-arrow{color:var(--text2);font-size:.8rem;}
 
-.btn-add-subject{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;background:none;border:1.5px dashed var(--border);border-radius:var(--radius);color:var(--primary);font-family:var(--font);font-size:.9rem;font-weight:600;cursor:pointer;touch-action:manipulation;min-height:48px;transition:background .15s,border-color .15s;margin-bottom:14px;}
+.btn-add-subject{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;background:none;border:1.5px dashed var(--border);border-radius:var(--radius-pill);color:var(--primary);font-family:var(--font);font-size:.9rem;font-weight:600;cursor:pointer;touch-action:manipulation;min-height:48px;transition:background .15s,border-color .15s;margin-bottom:14px;}
 .btn-add-subject:hover{background:var(--primary-soft);border-color:var(--primary);}
-.presets{display:flex;gap:6px;flex-wrap:nowrap;margin-bottom:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;}
-.presets::-webkit-scrollbar{height:3px;}
-.preset-btn{padding:7px 12px;border-radius:999px;background:var(--card);border:1px solid var(--border);color:var(--text2);font-size:.75rem;font-family:var(--font);font-weight:500;cursor:pointer;touch-action:manipulation;min-height:36px;white-space:nowrap;flex-shrink:0;transition:all .15s;}
+.templates-block{border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--card);margin-bottom:14px;overflow:hidden;}
+.templates-block summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;font-size:.72rem;font-family:var(--font-mono);color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.6px;touch-action:manipulation;user-select:none;transition:color .15s;min-height:40px;}
+.templates-block summary::-webkit-details-marker{display:none;}
+.templates-block summary:hover{color:var(--primary);}
+.templates-block summary .chev{font-size:.65rem;transition:transform .25s cubic-bezier(.16,1,.3,1);color:var(--text2);}
+.templates-block[open] summary{border-bottom:1px solid var(--border);}
+.templates-block[open] summary .chev{transform:rotate(180deg);}
+.templates-grid{display:flex;flex-wrap:wrap;gap:6px;padding:12px;}
+.preset-btn{padding:7px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--border);color:var(--text2);font-size:.75rem;font-family:var(--font);font-weight:500;cursor:pointer;touch-action:manipulation;min-height:36px;white-space:nowrap;transition:background .15s cubic-bezier(.16,1,.3,1),color .15s,border-color .15s,transform .1s;}
 .preset-btn:hover{background:var(--primary-soft);color:var(--primary);border-color:var(--primary);}
+.preset-btn:active{transform:scale(.95);}
 
 .result-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:var(--shadow);}
+.app-footer{text-align:center;padding:18px 0 8px;font-size:.72rem;font-family:var(--font-mono);color:var(--text2);letter-spacing:.2px;}
+.app-footer a{color:var(--primary);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s;}
+.app-footer a:hover{border-color:var(--primary);}
 .result-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
 .result-top > *{min-width:0;}
 .result-spi-big{font-family:var(--font-mono);font-size:2.4rem;font-weight:700;line-height:1;transition:color .3s;}
@@ -196,19 +234,31 @@ tfoot td{padding:9px 6px;border-top:1px solid var(--border);color:var(--primary)
 ::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
 
+/* ── PREMIUM POLISH ── */
+button{-webkit-tap-highlight-color:transparent;transition:transform .12s cubic-bezier(.16,1,.3,1);}
+button:active{transform:scale(.97);}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px;}
+.card,.subj-card,.result-panel,.spi-target-card{transition:box-shadow .2s cubic-bezier(.16,1,.3,1),border-color .2s;}
+@media(hover:hover){
+  .card:hover,.result-panel:hover{box-shadow:var(--shadow-md);}
+  .subj-card:hover{box-shadow:var(--shadow-md);border-color:var(--primary);}
+  .subj-sidebar-item:hover{transform:translateX(2px);}
+}
+.subj-sidebar-item{transition:background .15s cubic-bezier(.16,1,.3,1),transform .15s cubic-bezier(.16,1,.3,1);}
+
 /* ── SAVE/LOAD MODAL ── */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:2000;align-items:center;justify-content:center;padding:16px;}
 .modal-overlay.open{display:flex;}
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);width:100%;max-width:420px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:fadeUp .2s ease;}
 .modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border);}
-.modal-header h3{font-family:var(--font-head);font-size:.95rem;font-weight:700;color:var(--text);}
+.modal-header h3{font-family:var(--font-serif);font-size:1.1rem;font-weight:400;letter-spacing:-.2px;color:var(--text);}
 .modal-close{background:none;border:none;color:var(--text2);font-size:1.2rem;cursor:pointer;padding:4px;min-width:36px;min-height:36px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-sm);touch-action:manipulation;}
 .modal-close:hover{background:var(--card);}
 .modal-body{padding:16px 18px;}
 .save-name-row{display:flex;gap:8px;margin-bottom:14px;}
 .save-name-row input{flex:1;background:var(--input-bg);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font);font-size:.88rem;padding:9px 12px;outline:none;min-height:42px;}
-.save-name-row input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft);}
-.btn-save-confirm{background:var(--primary);color:var(--primary-text);border:none;border-radius:var(--radius-sm);padding:9px 16px;font-family:var(--font);font-size:.85rem;font-weight:600;cursor:pointer;white-space:nowrap;min-height:42px;touch-action:manipulation;transition:opacity .15s;}
+.save-name-row input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft-a);}
+.btn-save-confirm{background:var(--primary);color:var(--on-accent);border:none;border-radius:var(--radius-pill);padding:9px 16px;font-family:var(--font);font-size:.85rem;font-weight:600;cursor:pointer;white-space:nowrap;min-height:42px;touch-action:manipulation;transition:opacity .15s;}
 .btn-save-confirm:hover{opacity:.85;}
 .saved-list{display:flex;flex-direction:column;gap:6px;}
 .saved-item{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);animation:fadeUp .18s ease;}
@@ -216,22 +266,30 @@ tfoot td{padding:9px 6px;border-top:1px solid var(--border);color:var(--primary)
 .saved-item-name{font-size:.85rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .saved-item-meta{font-size:.68rem;color:var(--text2);font-family:var(--font-mono);margin-top:1px;}
 .saved-item-actions{display:flex;gap:5px;flex-shrink:0;}
-.btn-load-preset{background:var(--primary-soft);border:1px solid var(--primary);color:var(--primary);border-radius:var(--radius-sm);padding:5px 10px;font-size:.75rem;font-weight:600;cursor:pointer;touch-action:manipulation;min-height:32px;transition:background .15s;}
-.btn-load-preset:hover{background:var(--primary);color:var(--primary-text);}
+.btn-load-preset{background:var(--primary-soft);border:1px solid var(--primary);color:var(--primary);border-radius:var(--radius-pill);padding:5px 10px;font-size:.75rem;font-weight:600;cursor:pointer;touch-action:manipulation;min-height:32px;transition:background .15s;}
+.btn-load-preset:hover{background:var(--primary);color:var(--on-accent);}
 .btn-del-preset{background:var(--red-bg);border:1px solid var(--red);color:var(--red);border-radius:var(--radius-sm);width:30px;height:30px;min-width:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.85rem;touch-action:manipulation;transition:opacity .15s;}
 .btn-del-preset:hover{opacity:.7;}
 .empty-saves{text-align:center;padding:24px 0;color:var(--text2);font-size:.82rem;}
 .empty-saves span{font-size:1.8rem;display:block;margin-bottom:6px;}
 .modal-section-label{font-size:.68rem;font-family:var(--font-mono);color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.share-textarea{width:100%;min-height:180px;background:var(--input-bg);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font-mono);font-size:.78rem;line-height:1.55;padding:12px;outline:none;resize:vertical;margin-bottom:12px;}
+.share-textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft-a);}
+.share-actions{display:flex;gap:8px;}
+.share-actions button{flex:1;}
+.btn-copy{background:none;border:1px solid var(--border);color:var(--text);border-radius:var(--radius-sm);padding:9px 16px;font-family:var(--font);font-size:.85rem;font-weight:600;cursor:pointer;min-height:42px;touch-action:manipulation;transition:background .15s,border-color .15s;}
+.btn-copy:hover{background:var(--card);border-color:var(--primary);}
+.btn-copy.copied{color:var(--green);border-color:var(--green);}
+.share-hint{font-size:.7rem;color:var(--text2);margin-top:10px;line-height:1.5;}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text);color:var(--bg);padding:9px 18px;border-radius:999px;font-size:.8rem;font-family:var(--font);font-weight:600;z-index:3000;opacity:0;transition:all .25s ease;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.save-btn{background:none;border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;color:var(--text);cursor:pointer;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:600;gap:4px;touch-action:manipulation;transition:background .15s;font-family:var(--font-mono);}
+.save-btn{background:none;border:1px solid var(--border);border-radius:var(--radius-pill);padding:8px 10px;color:var(--text);cursor:pointer;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:600;gap:4px;touch-action:manipulation;transition:background .15s;font-family:var(--font-mono);}
 .save-btn:hover{background:var(--primary-soft);color:var(--primary);border-color:var(--primary);}
 @media(max-width:400px){.save-btn span{display:none;}}
-.p-high{background:var(--red-bg);color:var(--red);border:1px solid rgba(235,87,87,0.30);}
-.p-med{background:var(--yellow-bg);color:var(--yellow);border:1px solid rgba(210,153,34,0.30);}
-.p-low{background:var(--green-bg);color:var(--green);border:1px solid rgba(39,166,68,0.30);}
-[data-theme="dark"] .p-med{color:var(--yellow);}[data-theme="dark"] .p-high{color:var(--red);}[data-theme="dark"] .p-low{color:var(--green);}
+.p-high{background:rgba(220,38,38,.1);color:#dc2626;border:1px solid rgba(220,38,38,.3);}
+.p-med{background:rgba(217,119,6,.1);color:#b45309;border:1px solid rgba(217,119,6,.3);}
+.p-low{background:rgba(5,150,105,.1);color:#059669;border:1px solid rgba(5,150,105,.3);}
+[data-theme="dark"] .p-med{color:#fbbf24;}[data-theme="dark"] .p-high{color:#f87171;}[data-theme="dark"] .p-low{color:#34d399;}
 
 /* ── COMPONENT CARDS ── */
 .comp-list{display:flex;flex-direction:column;gap:8px;margin-bottom:8px;}
@@ -239,7 +297,7 @@ tfoot td{padding:9px 6px;border-top:1px solid var(--border);color:var(--primary)
 .comp-card.is-exam-comp{border-color:var(--primary);border-left:3px solid var(--primary);}
 .comp-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
 .comp-name-inp{flex:1;min-width:80px;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--font-mono);font-size:.78rem;font-weight:600;padding:5px 8px;outline:none;min-height:34px;}
-.comp-name-inp:focus{border-color:var(--primary);box-shadow:0 0 0 2px var(--primary-soft);}
+.comp-name-inp:focus{border-color:var(--primary);box-shadow:0 0 0 2px var(--primary-soft-a);}
 .comp-actions{display:flex;gap:4px;flex-shrink:0;}
 .comp-btn{background:none;border:1px solid var(--border);border-radius:6px;color:var(--text2);cursor:pointer;font-size:.75rem;padding:4px 7px;min-height:30px;min-width:30px;display:flex;align-items:center;justify-content:center;touch-action:manipulation;transition:all .12s;}
 .comp-btn:hover{background:var(--primary-soft);color:var(--primary);border-color:var(--primary);}
@@ -251,14 +309,14 @@ tfoot td{padding:9px 6px;border-top:1px solid var(--border);color:var(--primary)
 .comp-field{display:flex;flex-direction:column;gap:3px;}
 .comp-field label{font-size:.6rem;font-weight:600;color:var(--text2);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.3px;}
 .comp-field input,.comp-field select{background:var(--input-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--font-mono);font-size:.8rem;padding:6px 8px;min-height:34px;outline:none;width:100%;-webkit-appearance:none;}
-.comp-field input:focus,.comp-field select:focus{border-color:var(--primary);box-shadow:0 0 0 2px var(--primary-soft);}
+.comp-field input:focus,.comp-field select:focus{border-color:var(--primary);box-shadow:0 0 0 2px var(--primary-soft-a);}
 .comp-mode-tabs{display:flex;border-radius:6px;overflow:hidden;border:1px solid var(--border);}
-.comp-mode-tab{flex:1;padding:5px 6px;background:var(--card);border:none;color:var(--text2);font-size:.65rem;font-family:var(--font-mono);cursor:pointer;touch-action:manipulation;min-height:44px;transition:background .12s,color .12s;}
-.comp-mode-tab.active{background:var(--primary);color:var(--primary-text);}
+.comp-mode-tab{flex:1;padding:5px 6px;background:var(--card);border:none;color:var(--text2);font-size:.65rem;font-family:var(--font-mono);cursor:pointer;touch-action:manipulation;min-height:30px;transition:background .12s,color .12s;}
+.comp-mode-tab.active{background:var(--primary);color:var(--on-accent);}
 .comp-pass-badge{font-size:.62rem;font-family:var(--font-mono);padding:2px 6px;border-radius:999px;margin-left:4px;}
 .pass-ok{background:var(--green-bg);color:var(--green);}
 .pass-fail{background:var(--red-bg);color:var(--red);}
-.btn-add-comp{display:flex;align-items:center;justify-content:center;gap:5px;width:100%;padding:8px;background:none;border:1px dashed var(--border);border-radius:var(--radius-sm);color:var(--text2);font-family:var(--font-mono);font-size:.75rem;cursor:pointer;touch-action:manipulation;min-height:36px;transition:all .15s;}
+.btn-add-comp{display:flex;align-items:center;justify-content:center;gap:5px;width:100%;padding:8px;background:none;border:1px dashed var(--border);border-radius:var(--radius-pill);color:var(--text2);font-family:var(--font-mono);font-size:.75rem;cursor:pointer;touch-action:manipulation;min-height:36px;transition:all .15s;}
 .btn-add-comp:hover{background:var(--primary-soft);color:var(--primary);border-color:var(--primary);}
 .ts-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
 .ts-chip{font-family:var(--font-mono);font-size:.68rem;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:3px 10px;color:var(--text2);}
@@ -267,6 +325,7 @@ tfoot td{padding:9px 6px;border-top:1px solid var(--border);color:var(--primary)
 </style>
 </head>
 <body>
+<div class="bg-texture" aria-hidden="true"></div>
 
 <div class="topbar">
   <div class="topbar-left">
@@ -274,8 +333,10 @@ tfoot td{padding:9px 6px;border-top:1px solid var(--border);color:var(--primary)
     <h1>GTU SPI Calculator</h1>
   </div>
   <div class="topbar-right">
+    <button class="save-btn" onclick="openGuideModal()" title="How to use">❓ <span>Guide</span></button>
+    <button class="save-btn" onclick="openShareModal()" title="Share your marks">📤 <span>Share</span></button>
     <button class="save-btn" onclick="openSaveModal()" title="Save / Load presets">💾 <span>Saves</span></button>
-    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">☀️</button>
+    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
   </div>
 </div>
 
@@ -334,24 +395,36 @@ tfoot td{padding:9px 6px;border-top:1px solid var(--border);color:var(--primary)
       <div class="slider-ticks">
         <span>5.0</span><span>6.0</span><span>7.0</span><span>8.0</span><span>9.0</span><span>10.0</span>
       </div>
+      <div class="target-stamp" aria-hidden="true">JV</div>
     </div>
 
     <div class="card" style="padding-bottom:8px">
-      <div class="card-title">📚 Subjects</div>
-      <div class="presets">
-        <span style="font-size:.68rem;color:var(--text2);font-family:var(--font-mono);align-self:center;flex-shrink:0">Template:</span>
-        <button class="preset-btn" onclick="loadPreset('ce4')">CE Sem 4</button>
-        <button class="preset-btn" onclick="loadPreset('tp200')">T+P 200</button>
-        <button class="preset-btn" onclick="loadPreset('tp150')">T+P 150</button>
-        <button class="preset-btn" onclick="loadPreset('tp130')">T+P 130</button>
-        <button class="preset-btn" onclick="loadPreset('tp120')">T+P 120</button>
-        <button class="preset-btn" onclick="loadPreset('theory100')">Theory 100</button>
-        <button class="preset-btn" onclick="loadPreset('theory80')">Theory 80</button>
-        <button class="preset-btn" onclick="loadPreset('internal')">No GTU</button>
-        <button class="preset-btn" onclick="loadPreset('project')">Project</button>
-        <button class="preset-btn" onclick="loadPreset('custom')">+ Custom</button>
-        <button class="preset-btn" onclick="clearAll()" style="color:var(--red)">🗑 Clear</button>
+      <div class="card-title-row">
+        <div class="card-title">📚 Subjects</div>
+        <button class="btn-clear-all" onclick="clearAll()" title="Clear all subjects" aria-label="Clear all subjects">🗑 <span>Clear</span></button>
       </div>
+      <details class="templates-block">
+        <summary><span>📋 Templates</span><span class="chev">▾</span></summary>
+        <div class="templates-grid">
+          <button class="preset-btn" onclick="loadPreset('ce1')">CE Sem 1</button>
+          <button class="preset-btn" onclick="loadPreset('ce2')">CE Sem 2</button>
+          <button class="preset-btn" onclick="loadPreset('ce3')">CE Sem 3</button>
+          <button class="preset-btn" onclick="loadPreset('ce4')">CE Sem 4</button>
+          <button class="preset-btn" onclick="loadPreset('tp200')">T+P 200</button>
+          <button class="preset-btn" onclick="loadPreset('tp200ii')">T+P 200 II</button>
+          <button class="preset-btn" onclick="loadPreset('tp170')">T+P 170</button>
+          <button class="preset-btn" onclick="loadPreset('tp150')">T+P 150</button>
+          <button class="preset-btn" onclick="loadPreset('tp130')">T+P 130</button>
+          <button class="preset-btn" onclick="loadPreset('tp120')">T+P 120</button>
+          <button class="preset-btn" onclick="loadPreset('theory100')">Theory 100</button>
+          <button class="preset-btn" onclick="loadPreset('theory80')">Theory 80</button>
+          <button class="preset-btn" onclick="loadPreset('constitution')">Constitution</button>
+          <button class="preset-btn" onclick="loadPreset('internal')">No GTU</button>
+          <button class="preset-btn" onclick="loadPreset('pureinternal')">Pure Internal</button>
+          <button class="preset-btn" onclick="loadPreset('project')">Project</button>
+          <button class="preset-btn" onclick="loadPreset('custom')">+ Custom</button>
+        </div>
+      </details>
       <div id="subjectsList"></div>
       <button class="btn-add-subject" onclick="addSubject()">＋ Add Subject</button>
     </div>
@@ -373,6 +446,12 @@ tfoot td{padding:9px 6px;border-top:1px solid var(--border);color:var(--primary)
         </table>
       </div>
     </div>
+
+    <div class="app-footer">
+      Built for GTU students, by a GTU student &nbsp;·&nbsp;
+      <a href="https://github.com/JayVegada/gtu-spi-calculator" target="_blank" rel="noopener">@JayVegada</a>
+      &nbsp;·&nbsp; MIT License
+    </div>
   </div>
 </div>
 
@@ -391,6 +470,128 @@ tfoot td{padding:9px 6px;border-top:1px solid var(--border);color:var(--primary)
       </div>
       <div class="modal-section-label">Saved presets</div>
       <div class="saved-list" id="savedList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Share Modal -->
+<div class="modal-overlay" id="shareModal">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3>📤 Share Your Marks</h3>
+      <button class="modal-close" onclick="closeShareModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section-label">Preview — edit if you like, then send</div>
+      <textarea id="shareText" class="share-textarea" spellcheck="false"></textarea>
+      <div class="share-actions">
+        <button class="btn-save-confirm" id="shareBtn" onclick="doNativeShare()">📤 Share</button>
+        <button class="btn-copy" id="copyShareBtn" onclick="copyShareText()">📋 Copy</button>
+      </div>
+      <div class="share-hint">Works with WhatsApp, SMS, Instagram DM — whatever's on your phone. On desktop, Copy pastes straight into any chat.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Guide / Help Modal -->
+<div class="modal-overlay" id="guideModal">
+  <div class="modal" onclick="event.stopPropagation()" style="max-width:480px">
+    <div class="modal-header">
+      <h3>❓ How to Use</h3>
+      <button class="modal-close" onclick="closeGuideModal()">✕</button>
+    </div>
+    <div class="modal-body" style="display:flex;flex-direction:column;gap:16px">
+
+      <div>
+        <div class="modal-section-label">What is SPI?</div>
+        <p style="font-size:.85rem;color:var(--text2);line-height:1.65">
+          SPI (Semester Performance Index) is your weighted grade-point average for one semester.
+          GTU works it out as <b style="color:var(--text)">(Credits × Grade Points) added up for every subject, divided by total Credits</b>.
+          It's on a 10-point scale, not a percentage.
+        </p>
+      </div>
+
+      <div>
+        <div class="modal-section-label">Grade scale</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>%</th><th>Grade</th><th>Points</th></tr></thead>
+            <tbody>
+              <tr><td>85 and up</td><td style="color:var(--green);font-weight:700">AA</td><td>10</td></tr>
+              <tr><td>75 – 84</td><td style="font-weight:700">AB</td><td>9</td></tr>
+              <tr><td>65 – 74</td><td style="font-weight:700">BB</td><td>8</td></tr>
+              <tr><td>55 – 64</td><td style="font-weight:700">BC</td><td>7</td></tr>
+              <tr><td>45 – 54</td><td style="font-weight:700">CC</td><td>6</td></tr>
+              <tr><td>40 – 44</td><td style="font-weight:700">CD</td><td>5</td></tr>
+              <tr><td>35 – 39</td><td style="font-weight:700">DD</td><td>4</td></tr>
+              <tr><td>below 35</td><td style="color:var(--red);font-weight:700">FF</td><td>0</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <div class="modal-section-label">Adding a subject</div>
+        <p style="font-size:.85rem;color:var(--text2);line-height:1.65">
+          Tap <b style="color:var(--text)">＋ Add Subject</b>, or pick a <b style="color:var(--text)">Template</b> button that matches your subject's mark scheme
+          (e.g. <b style="color:var(--text)">T+P 200</b> for a subject with a practical component, <b style="color:var(--text)">Theory 100</b> for pure theory).
+          Templates fill in the right components with the correct max and pass marks automatically, so you don't have to look them up.
+        </p>
+      </div>
+
+      <div>
+        <div class="modal-section-label">Components</div>
+        <p style="font-size:.85rem;color:var(--text2);line-height:1.65">
+          Each subject is built from components — GTU ESE (the university exam), Mid Exam, Practical Internal, and so on.
+          Enter marks directly, or switch a component to <b style="color:var(--text)">Grade</b> mode if you only know your letter grade for it.
+        </p>
+      </div>
+
+      <div>
+        <div class="modal-section-label">The 🎯 exam star</div>
+        <p style="font-size:.85rem;color:var(--text2);line-height:1.65">
+          Mark one component as the <b style="color:var(--text)">exam component</b> — usually the GTU final. Leave its marks blank, and
+          the calculator tells you exactly what score you'd need there to hit your <b style="color:var(--text)">Target SPI</b>, plus what SPI
+          each possible grade would give you.
+        </p>
+      </div>
+
+      <div>
+        <div class="modal-section-label">Target SPI slider</div>
+        <p style="font-size:.85rem;color:var(--text2);line-height:1.65">
+          Drag the slider near the top to set your goal (5.0 – 10.0). Every prediction on the page updates live against that number.
+        </p>
+      </div>
+
+      <div>
+        <div class="modal-section-label">Credits &amp; audit subjects</div>
+        <p style="font-size:.85rem;color:var(--text2);line-height:1.65">
+          Double-check the credit value for each subject — it's what the SPI formula weights by. If a subject is an audit course
+          that shouldn't count toward SPI, set <b style="color:var(--text)">Include in SPI</b> to No.
+        </p>
+      </div>
+
+      <div>
+        <div class="modal-section-label">Failing a subject (FF)</div>
+        <p style="font-size:.85rem;color:var(--text2);line-height:1.65">
+          If you miss a pass mark, the subject is auto-graded FF (0 points) — but its credits still count in the SPI total, per GTU rules.
+          That's why an FF pulls your SPI down rather than just being ignored.
+        </p>
+      </div>
+
+      <div>
+        <div class="modal-section-label">Saving your work</div>
+        <p style="font-size:.85rem;color:var(--text2);line-height:1.65">
+          Everything auto-saves in this browser as you type. Use <b style="color:var(--text)">💾 Saves</b> to name and keep multiple
+          snapshots — different semesters, or "what-if" scenarios — and reload any of them later. Use <b style="color:var(--text)">📤 Share</b>
+          to send a quick text summary of your marks to WhatsApp or anywhere else.
+        </p>
+      </div>
+
+      <div style="font-size:.72rem;color:var(--text2);font-family:var(--font-mono);border-top:1px solid var(--border);padding-top:12px">
+        Nothing you enter leaves this device — all calculation happens locally in your browser.
+      </div>
+
     </div>
   </div>
 </div>
@@ -505,6 +706,30 @@ const COMP_PRESETS={
     {name:'Mid Exam',maxMarks:30,passMarks:12,includeInPass:true},
     {name:'Practical Internal',maxMarks:20,passMarks:0,includeInPass:false},
   ],
+  // T+P 170: GTU70 + Mid30 + Practical Internal20 + Viva50 (e.g. Professional Comm. & Ethics)
+  tp170:[
+    {name:'GTU ESE',maxMarks:70,passMarks:23,includeInPass:true,isExam:true},
+    {name:'Mid Exam',maxMarks:30,passMarks:12,includeInPass:true},
+    {name:'Practical Internal',maxMarks:20,passMarks:0,includeInPass:false},
+    {name:'Viva',maxMarks:50,passMarks:0,includeInPass:false},
+  ],
+  // T+P 200 (5-component): GTU70 + Mid30 + Practical Internal20 + TW/SL30 + Viva50 (e.g. DS/DBMS/Digital Fundamentals)
+  tp200ii:[
+    {name:'GTU ESE',maxMarks:70,passMarks:23,includeInPass:true,isExam:true},
+    {name:'Mid Exam',maxMarks:30,passMarks:12,includeInPass:true},
+    {name:'Practical Internal',maxMarks:20,passMarks:0,includeInPass:false},
+    {name:'TW/SL',maxMarks:30,passMarks:0,includeInPass:false},
+    {name:'Viva',maxMarks:50,passMarks:0,includeInPass:false},
+  ],
+  // Indian Constitution-type: ESE50 + Internal(PBL)30, no mid-sem component
+  constitution:[
+    {name:'GTU ESE',maxMarks:50,passMarks:17,includeInPass:true,isExam:true},
+    {name:'Internal (PBL)',maxMarks:30,passMarks:0,includeInPass:false},
+  ],
+  // Single pure-internal component (e.g. Design Thinking: 100 internal, no GTU exam)
+  pureinternal:[
+    {name:'Internal',maxMarks:100,passMarks:0,includeInPass:false},
+  ],
   theory100:[
     {name:'GTU ESE',maxMarks:70,passMarks:23,includeInPass:true,isExam:true},
     {name:'Mid Exam',maxMarks:30,passMarks:12,includeInPass:true},
@@ -576,16 +801,7 @@ function updateComp(sid,cid,field,val){
       c.obtained=Math.round(mid*(parseFloat(c.maxMarks)||0));
     }
   }
-  if(field==='mode'){
-    const idx=subjects.indexOf(s);
-    const cardEl=document.getElementById('card_'+sid);
-    if(cardEl){
-      const bodyWasOpen=document.getElementById('body_'+sid)&&document.getElementById('body_'+sid).classList.contains('open');
-      cardEl.innerHTML=cardHTML(s,idx+1);
-      if(!bodyWasOpen){const b=document.getElementById('body_'+sid);if(b)b.classList.remove('open');}
-    }
-    recalc();return;
-  }
+  if(field==='mode'||field==='isExam'){refreshSubjectCard(s);}
   updateCardResult(s);recalc();
 }
 function setEstGrade(sid,cid,grade){
@@ -698,6 +914,22 @@ function renderSubjects(){
     div.innerHTML=cardHTML(s,i+1);
     list.appendChild(div);
   });
+}
+
+// Re-renders one subject's card in place (needed when a field changes the
+// card's *structure* — e.g. mode marks<->grade swaps an <input> for a
+// <select>, isExam toggles which component shows the target star).
+// Plain value edits (marks, name, credits...) don't need this.
+function refreshSubjectCard(s){
+  const div=document.getElementById('card_'+s.id);
+  if(!div)return;
+  const wasOpen=div.querySelector('.subj-body')?.classList.contains('open')!==false;
+  const idx=subjects.findIndex(x=>x.id===s.id);
+  div.innerHTML=cardHTML(s,idx+1);
+  if(!wasOpen){
+    const body=div.querySelector('.subj-body');
+    if(body)body.classList.remove('open');
+  }
 }
 
 function tsDisplay(ts){
@@ -999,7 +1231,44 @@ function recalc(){
 // PRESETS
 // ═══════════════════════════════════════════════
 function loadPreset(key){
-  if(key==='ce4'){
+  if(key==='ce1'){
+    clearAll(true);
+    [
+      {name:'Physics',credits:4,components:COMP_PRESETS.tp150.map(c=>mkComp({...c}))},
+      {name:'Mathematics-I',credits:4,components:COMP_PRESETS.theory100.map(c=>mkComp({...c}))},
+      {name:'Basic Electrical Engineering',credits:4,components:COMP_PRESETS.tp150.map(c=>mkComp({...c}))},
+      {name:'Basic Mechanical Engineering',credits:4,components:COMP_PRESETS.tp150.map(c=>mkComp({...c}))},
+      {name:'Integrated Personality Dev. Course',credits:2,components:COMP_PRESETS.theory100.map(c=>mkComp({...c}))},
+      {name:'Digital Fabrication Workshop',credits:1,components:[
+        mkComp({name:'Internal',maxMarks:80,passMarks:0,includeInPass:false}),
+        mkComp({name:'Viva',maxMarks:20,passMarks:0,includeInPass:false}),
+      ]},
+    ].forEach(p=>subjects.push(mkSubject({name:p.name,credits:p.credits,components:p.components})));
+    renderSubjects();recalc();
+  } else if(key==='ce2'){
+    clearAll(true);
+    [
+      {name:'Engineering Graphics & Design',credits:2,components:COMP_PRESETS.tp150.map(c=>mkComp({...c}))},
+      {name:'Design Thinking',credits:2,components:COMP_PRESETS.pureinternal.map(c=>mkComp({...c}))},
+      {name:'Basic Electronics Engineering',credits:4,components:COMP_PRESETS.tp150.map(c=>mkComp({...c}))},
+      {name:'Programming for Problem Solving',credits:4,components:COMP_PRESETS.tp150.map(c=>mkComp({...c}))},
+      {name:'Mathematics-2',credits:4,components:COMP_PRESETS.theory100.map(c=>mkComp({...c}))},
+      {name:'English for Technical Communication',credits:3,components:COMP_PRESETS.tp150.map(c=>mkComp({...c}))},
+      {name:'Fundamental of AI',credits:2,components:COMP_PRESETS.theory100.map(c=>mkComp({...c}))},
+    ].forEach(p=>subjects.push(mkSubject({name:p.name,credits:p.credits,components:p.components})));
+    renderSubjects();recalc();
+  } else if(key==='ce3'){
+    clearAll(true);
+    [
+      {name:'Professional Communication and Ethics',credits:2,components:COMP_PRESETS.tp170.map(c=>mkComp({...c}))},
+      {name:'Indian Constitution',credits:2,components:COMP_PRESETS.constitution.map(c=>mkComp({...c}))},
+      {name:'Digital Fundamentals',credits:4,components:COMP_PRESETS.tp200ii.map(c=>mkComp({...c}))},
+      {name:'Data Structures',credits:4,components:COMP_PRESETS.tp200ii.map(c=>mkComp({...c}))},
+      {name:'Database Management System',credits:4,components:COMP_PRESETS.tp200ii.map(c=>mkComp({...c}))},
+      {name:'Probability and Statistics',credits:4,components:COMP_PRESETS.tp150.map(c=>mkComp({...c}))},
+    ].forEach(p=>subjects.push(mkSubject({name:p.name,credits:p.credits,components:p.components})));
+    renderSubjects();recalc();
+  } else if(key==='ce4'){
     clearAll(true);
     [
       {name:'Operating Systems',credits:4,components:COMP_PRESETS.tp200.map(c=>mkComp({...c})),mid:13},
@@ -1026,8 +1295,93 @@ function loadPreset(key){
     addSubject({components:COMP_PRESETS[key].map(c=>mkComp({...c}))});
   }
 }
-function clearAll(silent=false){subjects=[];subCtr=0;compCtr=0;renderSubjects();recalc();}
+function clearAll(silent=false){
+  if(!silent&&subjects.length>0&&!confirm('Clear all subjects? This cannot be undone.'))return;
+  subjects=[];subCtr=0;compCtr=0;renderSubjects();recalc();
+  if(!silent)showToast('🗑 Cleared all subjects');
+}
 function toggleBody(id){const b=document.getElementById('body_'+id);if(b)b.classList.toggle('open');}
+
+// ═══════════════════════════════════════════════
+// SHARE
+// ═══════════════════════════════════════════════
+function buildShareText(){
+  const name=document.getElementById('studentName').value.trim();
+  const sem=document.getElementById('sem').value;
+  const who=[name,sem?`Sem ${sem}`:''].filter(Boolean).join(' · ');
+  const lines=[`📊 *GTU SPI Report*${who?` — ${who}`:''}`,''];
+
+  if(subjects.length===0){
+    lines.push('No subjects added yet.');
+  } else {
+    subjects.forEach((s,i)=>{
+      const r=compute(s);
+      const nm=s.name||`Subject ${i+1}`;
+      const tag=s.includeInSPI?'':' (audit)';
+      lines.push(`${i+1}. ${nm} — ${r.pct.toFixed(1)}% (${r.grade})${tag} · ${s.credits||0}cr`);
+    });
+  }
+
+  const inSPI=subjects.filter(s=>s.includeInSPI);
+  const tc=inSPI.reduce((a,s)=>a+(parseFloat(s.credits)||0),0);
+  const tw=inSPI.reduce((a,s)=>a+compute(s).pts*(parseFloat(s.credits)||0),0);
+  const spi=tc>0?tw/tc:0;
+  const hasEst=subjects.some(s=>s.components.some(c=>c.isExam&&c.estGrade&&(c.obtained===''||isNaN(parseFloat(c.obtained)))));
+
+  lines.push('',`🎯 Target SPI: ${targetSPI.toFixed(1)}`);
+  if(tc>0){
+    const met=spi>=targetSPI;
+    lines.push(`📈 ${hasEst?'Estimated':'Projected'} SPI: *${spi.toFixed(2)}*${met?' ✅ Target met!':` (${(targetSPI-spi).toFixed(2)} to go)`}`);
+  }
+  lines.push('','Calculate yours → https://jayvegada.github.io/gtu-spi-calculator/');
+  return lines.join('\n');
+}
+
+function openShareModal(){
+  document.getElementById('shareText').value=buildShareText();
+  document.getElementById('shareModal').classList.add('open');
+}
+function closeShareModal(){document.getElementById('shareModal').classList.remove('open');}
+
+async function doNativeShare(){
+  const text=document.getElementById('shareText').value;
+  if(navigator.share){
+    try{
+      await navigator.share({title:'GTU SPI Report',text});
+    }catch(e){/* user cancelled share sheet — no-op */}
+  } else {
+    copyShareText();
+  }
+}
+
+async function copyShareText(){
+  const text=document.getElementById('shareText').value;
+  const btn=document.getElementById('copyShareBtn');
+  let ok=false;
+  try{
+    await navigator.clipboard.writeText(text);
+    ok=true;
+  }catch(e){
+    try{
+      const ta=document.getElementById('shareText');
+      ta.select();document.execCommand('copy');
+      ok=true;
+    }catch(e2){}
+  }
+  if(ok){
+    showToast('📋 Copied! Paste it in WhatsApp or anywhere.');
+    if(btn){
+      const orig=btn.textContent;
+      btn.textContent='✅ Copied';
+      btn.classList.add('copied');
+      setTimeout(()=>{btn.textContent=orig;btn.classList.remove('copied');},1600);
+    }
+  } else {
+    showToast('⚠️ Could not copy — select the text manually');
+  }
+}
+
+document.getElementById('shareModal').addEventListener('click',function(e){if(e.target===this)closeShareModal();});
 
 // ═══════════════════════════════════════════════
 // SLIDER
@@ -1159,6 +1513,10 @@ function openSaveModal(){
 }
 function closeSaveModal(){document.getElementById('saveModal').classList.remove('open');}
 
+function openGuideModal(){document.getElementById('guideModal').classList.add('open');}
+function closeGuideModal(){document.getElementById('guideModal').classList.remove('open');}
+document.getElementById('guideModal').addEventListener('click',function(e){if(e.target===this)closeGuideModal();});
+
 document.getElementById('saveModal').addEventListener('click',function(e){if(e.target===this)closeSaveModal();});
 document.getElementById('saveNameInput').addEventListener('keydown',function(e){if(e.key==='Enter')doSave();});
 
@@ -1188,22 +1546,21 @@ recalc=function(){
 (function autoLoad(){
   try{
     const raw=localStorage.getItem(AUTO_KEY);
-    if(!raw)return;
+    if(!raw){
+      try{
+        if(!localStorage.getItem('gtu_spi_seen_guide_v1')){
+          localStorage.setItem('gtu_spi_seen_guide_v1','1');
+          openGuideModal();
+        }
+      }catch(e){}
+      return;
+    }
     const state=JSON.parse(raw);
     if(state&&state.subjects&&state.subjects.length>0){applyState(state);return;}
   }catch(e){}
   recalc();
 })();
 </script>
-
-<footer style="text-align:center;padding:18px 16px 28px;border-top:1px solid var(--border);margin-top:8px;">
-  <span style="font-size:.68rem;font-family:var(--font-mono);color:var(--text2);letter-spacing:.4px;">
-    Built for GTU students, by a GTU student &nbsp;·&nbsp;
-    <a href="https://github.com/JayVegada/gtu-spi-calculator" target="_blank" rel="noopener"
-       style="color:var(--primary);text-decoration:none;font-weight:600;">@JayVegada</a>
-    &nbsp;·&nbsp; MIT License
-  </span>
-</footer>
 
 </body>
 </html>
