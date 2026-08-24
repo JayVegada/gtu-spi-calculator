@@ -8,11 +8,13 @@ A smart, mobile-friendly SPI (Semester Performance Index) calculator for **Gujar
 
 ## ✨ Features
 
-- **All GTU subject types** — T+P 200, T+P 150, T+P 130, T+P 120, Theory 100, Theory 80, No GTU (internal-only)
+- **17 GTU subject-type templates** — CE Sem 1–4 (full pre-filled semesters), T+P 200, T+P 200 II, T+P 170, T+P 150, T+P 130, T+P 120, Theory 100, Theory 80, Constitution, No GTU, Pure Internal, Project, and Custom
 - **Target SPI prediction** — Set your target SPI and see exactly how many marks you need in the GTU exam
 - **Grade-based entry** — Enter marks as letter grades (AA, AB, BB…) instead of raw numbers
 - **Estimated grade picker** — Blank the GTU exam field → pick an expected grade → instantly preview your SPI
 - **Pass/fail detection** — Warns you per-component if you're below the GTU pass threshold
+- **Built-in Guide** — A one-tap "How to Use" modal explaining SPI, grades, components, and targeting — no more guessing
+- **Share your marks** — Generate a shareable text summary and send it straight to WhatsApp, SMS, or wherever, or copy it to your clipboard
 - **Save & Load presets** — Name and store subject configurations in your browser (localStorage)
 - **Auto-save** — Your session is automatically restored when you reopen the page
 - **Dark / Light theme** — Toggleable, remembers your preference
@@ -20,7 +22,6 @@ A smart, mobile-friendly SPI (Semester Performance Index) calculator for **Gujar
 - **100% offline** — No server, no login, no data sent anywhere
 
 ---
-
 
 ## 🚀 How to Use
 
@@ -33,7 +34,7 @@ Just open the live demo link above. No installation needed.
 git clone https://github.com/JayVegada/gtu-spi-calculator.git
 
 # Open in browser — that's it!
-open GTU-SPI-CALCULATOR.html
+open index.html
 ```
 
 ---
@@ -60,15 +61,21 @@ SPI = Σ(Grade Points × Credits) / Σ(Credits)
 
 ## 🗂️ Subject Type Presets
 
-| Preset      | GTU ESE | Mid Exam | Internal/Practical | Total |
-|-------------|---------|----------|--------------------|-------|
-| T+P 200     | 70      | 30       | 100                | 200   |
-| T+P 150     | 70      | 30       | 20 + 30 (Viva)     | 150   |
-| T+P 130     | 70      | 30       | 30                 | 130   |
-| T+P 120     | 70      | 30       | 20                 | 120   |
-| Theory 100  | 70      | 30       | —                  | 100   |
-| Theory 80   | 50      | 30       | —                  | 80    |
-| No GTU      | —       | 30       | 20                 | 50    |
+| Preset       | GTU ESE | Mid Exam | Internal/Practical            | Total |
+|--------------|---------|----------|--------------------------------|-------|
+| T+P 200      | 70      | 30       | 100                            | 200   |
+| T+P 200 II   | 70      | 30       | 20 + TW/SL 30 + Viva 50        | 200   |
+| T+P 170      | 70      | 30       | 20 + Viva 50                   | 170   |
+| T+P 150      | 70      | 30       | 20 + 30 (Viva)                 | 150   |
+| T+P 130      | 70      | 30       | 30                              | 130   |
+| T+P 120      | 70      | 30       | 20                              | 120   |
+| Theory 100   | 70      | 30       | —                               | 100   |
+| Theory 80    | 50      | 30       | —                               | 80    |
+| Constitution | 50      | —        | Internal (PBL) 30              | 80    |
+| No GTU       | —       | 30       | 20                              | 50    |
+| Pure Internal| —       | —        | Internal 100                   | 100   |
+
+**Full-semester templates** — **CE Sem 1**, **CE Sem 2**, **CE Sem 3**, and **CE Sem 4** load an entire pre-filled semester (all subjects, credits, and components) in one tap, matching the actual GTU Computer Engineering syllabus.
 
 ---
 
@@ -76,8 +83,10 @@ SPI = Σ(Grade Points × Credits) / Σ(Credits)
 
 - **Leave GTU exam marks blank** to activate target prediction mode
 - Tap **🎯** on any component to mark it as the "exam component" for SPI targeting
-- Use **CE Sem 4** template to load a pre-filled example with 6 subjects
+- Use the **CE Sem 1–4** templates to load a full pre-filled semester in one tap
+- Open the **❓ Guide** in the top bar any time for a refresher on how everything works
 - **Save presets** with your subject structure so you don't have to set it up each semester
+- Use **📤 Share** to send a quick summary of your marks to friends over WhatsApp
 
 ---
 
@@ -89,7 +98,7 @@ SPI = Σ(Grade Points × Credits) / Σ(Credits)
 | Styling | CSS3 with custom properties (no framework) |
 | Logic | Vanilla JavaScript (no libraries) |
 | Storage | Browser `localStorage` |
-| Fonts | Google Fonts (Inter, Plus Jakarta Sans, JetBrains Mono) |
+| Fonts | Google Fonts (Inter, Source Serif 4, Plus Jakarta Sans, JetBrains Mono) |
 
 Single file. No build step. No npm. No framework.
 
@@ -99,10 +108,10 @@ Single file. No build step. No npm. No framework.
 
 ```
 gtu-spi-calculator/
-├── GTU-SPI-CALCULATOR.html  # The entire app
+├── index.html         # The entire app
 ├── README.md
 ├── LICENSE
-└── screenshots/             # Optional — add your own
+└── screenshots/        # Optional — add your own
     ├── dark.png
     └── light.png
 ```
@@ -135,4 +144,3 @@ MIT License — see [LICENSE](LICENSE) for details.
 ---
 
 > Made for GTU students, by a GTU student. ⚡
-
