@@ -14,17 +14,34 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>GTU SPI Calculator — by Jay Vegada</title>
+<title>GTU SPI Calculator – Calculate SPI &amp; Target Marks (Sem 1–5)</title>
 <meta name="author" content="Jay Vegada (@JayVegada)">
-<meta name="description" content="Free GTU SPI/CGPA calculator for Gujarat Technological University students. Supports all subject types, target SPI prediction, grade picker, and offline use.">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<link rel="canonical" href="https://jayvegada.github.io/gtu-spi-calculator/">
+<meta name="keywords" content="GTU SPI calculator, GTU CGPA, GTU grade calculator, GTU target SPI, Gujarat Technological University">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "GTU SPI Calculator",
+  "url": "https://jayvegada.github.io/gtu-spi-calculator/",
+  "description": "Free GTU SPI calculator. Calculate your Semester Performance Index and the exam marks needed to reach a target SPI.",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any",
+  "inLanguage": "en-IN",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+  "author": { "@type": "Person", "name": "Jay Vegada", "alternateName": "Pirate", "url": "https://github.com/JayVegada" }
+}
+</script>
+<meta name="description" content="Free GTU SPI calculator for Gujarat Technological University students. Calculate your semester SPI, find the ESE marks needed for your target SPI, and plan grades. Runs in your browser, no signup.">
 <meta name="theme-color" content="#5d2a1a" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)">
-<meta property="og:title" content="GTU SPI Calculator">
+<meta property="og:title" content="GTU SPI Calculator – Calculate SPI &amp; Target Marks">
 <meta property="og:description" content="Calculate your GTU Semester Performance Index and predict the exam marks you need to hit your target SPI.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://jayvegada.github.io/gtu-spi-calculator/">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GTU SPI Calculator">
+<meta name="twitter:title" content="GTU SPI Calculator – Calculate SPI &amp; Target Marks">
 <meta name="twitter:description" content="Calculate your GTU SPI and predict the exam marks you need to hit your target.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -584,6 +601,21 @@ body[data-mode="actual"] .exp-only{display:none!important;}
         </table>
       </div>
     </div>
+
+    <section class="card" id="about-gtu-spi">
+      <h2 class="card-title">About this GTU SPI Calculator</h2>
+      <div class="guide-txt">
+        <p>This is a free <b>GTU SPI calculator</b> for Gujarat Technological University students. Enter your marks or grades for each subject and it shows your semester SPI. Set a <b>target SPI</b> and it tells you the ESE marks you still need. Templates are available for CE Semester 1 to 5, and Custom works for any branch.</p>
+        <h3 style="font-size:1rem;margin:12px 0 6px;color:var(--text)">How GTU SPI is calculated</h3>
+        <div class="guide-eq">SPI = Σ(Grade Point × Credits) ÷ Σ Credits</div>
+        <p>Grade points: AA = 10, AB = 9, BB = 8, BC = 7, CC = 6, CD = 5, DD = 4, FF = 0. Only the final subject grade becomes a grade point. Subjects with more credits count more.</p>
+        <h3 style="font-size:1rem;margin:12px 0 6px;color:var(--text)">FAQ</h3>
+        <p><b>What is the difference between SPI and CGPA?</b><br>SPI is your result for one semester. CGPA is the cumulative result across all semesters.</p>
+        <p><b>How do I find the marks needed for my target SPI?</b><br>Switch to Expected SPI, set your target, enter the marks you already have, and open the pending subject. The calculator shows the marks needed in the GTU exam.</p>
+        <p><b>Is my data stored online?</b><br>No. Everything is calculated and saved in your own browser.</p>
+        <p><b>Is this an official GTU tool?</b><br>No. It is an independent student project. Required-mark results are estimates, not an official GTU guarantee.</p>
+      </div>
+    </section>
 
     <div class="app-footer">
       Built for GTU students, by a GTU student &nbsp;·&nbsp;
